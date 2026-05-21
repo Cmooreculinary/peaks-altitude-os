@@ -2,4 +2,4 @@ services:
   - type: web
     name: peaks-altitude-os
     runtime: static
-    publishPath: public
+    staticPublishPath: ./public
