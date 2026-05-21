@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PEAKS - THE ASCENT</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "error-container": "#93000a",
+              "on-surface": "#e5e2e3",
+              "on-background": "#e5e2e3",
+              "inverse-surface": "#e5e2e3",
+              "surface-bright": "#39393a",
+              "tertiary": "#9ccaff",
+              "surface": "#131314",
+              "surface-container-lowest": "#0e0e0f",
+              "on-tertiary": "#003257",
+              "on-primary-fixed": "#351000",
+              "on-tertiary-fixed-variant": "#00497b",
+              "error": "#ffb4ab",
+              "outline-variant": "#5a4136",
+              "surface-tint": "#ffb693",
+              "secondary-fixed": "#e0e3e5",
+              "on-secondary-container": "#b6b9bb",
+              "surface-container-highest": "#353436",
+              "secondary-fixed-dim": "#c4c7c9",
+              "surface-container": "#1f1f20",
+              "outline": "#a98a7d",
+              "secondary-container": "#464a4b",
+              "surface-container-low": "#1b1b1c",
+              "inverse-primary": "#a04100",
+              "on-tertiary-container": "#003357",
+              "on-primary-container": "#572000",
+              "inverse-on-surface": "#303031",
+              "surface-container-high": "#2a2a2b",
+              "primary-fixed": "#ffdbcc",
+              "tertiary-fixed-dim": "#9ccaff",
+              "tertiary-container": "#059eff",
+              "secondary": "#c4c7c9",
+              "on-error-container": "#ffdad6",
+              "on-surface-variant": "#e2bfb0",
+              "primary-container": "#ff6b00",
+              "on-secondary": "#2d3133",
+              "primary": "#ffb693",
+              "on-secondary-fixed": "#191c1e",
+              "primary-fixed-dim": "#ffb693",
+              "on-primary": "#561f00",
+              "on-tertiary-fixed": "#001d35",
+              "on-secondary-fixed-variant": "#444749",
+              "background": "#131314",
+              "surface-variant": "#353436",
+              "surface-dim": "#131314",
+              "on-error": "#690005",
+              "on-primary-fixed-variant": "#7a3000",
+              "tertiary-fixed": "#d0e4ff"
+            },
+            fontFamily: {
+              "headline": ["Space Grotesk"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .weather-distort {
+            backdrop-filter: blur(8px) saturate(50%);
+            background: linear-gradient(to bottom, rgba(255,255,255,0.05), transparent);
+        }
+        .vignette {
+            box-shadow: inset 0 0 150px rgba(0,0,0,0.8);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body selection:bg-primary-container selection:text-on-primary-container overflow-hidden">
+<!-- TOP APP BAR -->
+<header class="bg-[#131314]/70 backdrop-blur-xl text-[#ff6b00] border-b border-[#5a4136]/15 shadow-[0_40px_40px_-15px_rgba(255,182,147,0.05)] fixed top-0 w-full z-50 flex justify-between items-center px-6 h-20 w-full">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-2xl" data-icon="landscape">landscape</span>
+<h1 class="font-['Space_Grotesk'] tracking-tighter uppercase font-bold text-2xl font-black text-[#ff6b00] tracking-widest">PEAKS</h1>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden md:flex gap-8 items-center font-['Space_Grotesk'] tracking-widest uppercase text-xs font-bold">
+<a class="text-slate-400 hover:text-[#ffb693] transition-colors" href="#">BASE CAMP</a>
+<a class="text-slate-400 hover:text-[#ffb693] transition-colors" href="#">THE OUTPOST</a>
+<a class="text-[#ff6b00]" href="#">THE ASCENT</a>
+</div>
+<span class="material-symbols-outlined text-2xl cursor-pointer active:scale-95 duration-200" data-icon="wb_cloudy">wb_cloudy</span>
+</div>
+</header>
+<!-- MAIN ASCENT CANVAS -->
+<main class="relative h-screen w-full flex items-center justify-center pt-20">
+<!-- Environmental Visual Background -->
+<div class="absolute inset-0 z-0">
+<img alt="A snowy mountain ridge under a dark stormy sky" class="w-full h-full object-cover filter brightness-50 contrast-125" data-alt="Cinematic snowy mountain peak under dark stormy sky" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBrnQuHpoty56S5go3w5szGXeYC7f_5GGZ5dDAfCtd5f4x0CzeiE1_wttaNYjkpV89uW3CqZRTDIAtvdmLC82WTt2xuppVAuBIudPJ2rg901eQFqd0IUDyR7a_KIQkhtOyUTsMubKp0wna3AMhSSKbqK5JJR9jOdQRe3ksobJ2x-P8_6_-sdiArd2V0PIrRmSNhA_Cp0f4oBDTMtSMaT6Bmb8_cPvlTxr2w8I8fFNd7lPDKj_ehFJ2C1AiVi8ULuQEbrcKPAEFDkbik"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface via-transparent to-transparent opacity-60"></div>
+<div class="absolute inset-0 weather-distort pointer-events-none"></div>
+<div class="absolute inset-0 vignette pointer-events-none"></div>
+</div>
+<!-- REAL-TIME HUD: TOP METRICS -->
+<div class="absolute top-24 left-1/2 -translate-x-1/2 z-20 w-full max-w-4xl px-6">
+<div class="flex justify-between items-start bg-surface-container/40 backdrop-blur-md p-4 rounded-sm border border-outline-variant/20">
+<div class="flex flex-col">
+<span class="text-[0.6rem] font-bold tracking-[0.2em] text-on-surface-variant uppercase">ALTITUDE</span>
+<div class="flex items-baseline gap-1">
+<span class="font-headline text-4xl font-bold tracking-tighter">7,500</span>
+<span class="text-sm font-headline font-medium text-on-surface-variant">m</span>
+</div>
+</div>
+<div class="h-10 w-[1px] bg-outline-variant/30 self-center"></div>
+<div class="flex flex-col items-center">
+<span class="text-[0.6rem] font-bold tracking-[0.2em] text-on-surface-variant uppercase">TEMPERATURE</span>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-tertiary" data-icon="ac_unit">ac_unit</span>
+<span class="font-headline text-2xl font-bold">-25°C</span>
+</div>
+</div>
+<div class="h-10 w-[1px] bg-outline-variant/30 self-center"></div>
+<div class="flex flex-col items-end">
+<span class="text-[0.6rem] font-bold tracking-[0.2em] text-on-surface-variant uppercase">WIND SPEED</span>
+<div class="flex items-baseline gap-1">
+<span class="font-headline text-2xl font-bold">40</span>
+<span class="text-sm font-headline font-medium text-on-surface-variant">km/h</span>
+</div>
+</div>
+</div>
+</div>
+<!-- LEFT SIDE: FELLOW CLIMBERS -->
+<div class="absolute left-6 top-1/2 -translate-y-1/2 z-20 flex flex-col gap-3">
+<div class="group relative">
+<div class="w-12 h-12 rounded-sm bg-surface-container-high border border-outline-variant/30 flex items-center justify-center hover:bg-primary/20 transition-all cursor-crosshair">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="person">person</span>
+</div>
+<div class="absolute left-14 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-surface-container-highest px-3 py-1 rounded-sm whitespace-nowrap">
+<span class="text-[0.6rem] font-bold tracking-widest uppercase">SHERPA TENZING</span>
+</div>
+</div>
+<div class="group relative">
+<div class="w-12 h-12 rounded-sm bg-surface-container-high border border-outline-variant/30 flex items-center justify-center hover:bg-primary/20 transition-all cursor-crosshair">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="person_pin">person_pin</span>
+</div>
+<div class="absolute left-14 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-surface-container-highest px-3 py-1 rounded-sm whitespace-nowrap">
+<span class="text-[0.6rem] font-bold tracking-widest uppercase">TEAM: ALPHA-1</span>
+</div>
+</div>
+</div>
+<!-- CHALLENGE EVENT MODAL: APPROACHING BLIZZARD -->
+<div class="z-30 w-full max-w-lg mx-6 bg-surface-container-high/90 backdrop-blur-2xl border border-primary/40 p-8 shadow-2xl relative">
+<div class="absolute -top-3 left-8 bg-primary-container px-3 py-1">
+<span class="text-[0.6rem] font-black tracking-[0.3em] text-on-primary-container uppercase">CRITICAL EVENT</span>
+</div>
+<div class="flex items-start gap-4 mb-6">
+<span class="material-symbols-outlined text-primary text-4xl" data-icon="warning" style="font-variation-settings: 'FILL' 1;">warning</span>
+<div>
+<h2 class="font-headline text-2xl font-bold tracking-tight mb-2 uppercase italic">Approaching Blizzard</h2>
+<p class="text-on-surface-variant text-sm leading-relaxed font-light">
+                        Whiteout conditions detected at 7,600m. The path forward is obscured. Staying put risks hypothermia, but pushing through may lead to navigation failure.
+                    </p>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<button class="bg-primary-container text-on-primary hover:bg-[#ff6b00] active:scale-95 transition-all p-4 rounded-sm flex flex-col items-center gap-2 group">
+<span class="text-[0.6rem] font-bold tracking-[0.2em] opacity-80 uppercase">STAMINA TEST</span>
+<span class="font-headline font-bold text-lg tracking-widest">PUSH THROUGH</span>
+<div class="w-full h-1 bg-on-primary/20 mt-1">
+<div class="w-1/3 h-full bg-on-primary"></div>
+</div>
+</button>
+<button class="bg-surface-container-highest text-on-surface border border-outline-variant/50 hover:bg-surface-bright active:scale-95 transition-all p-4 rounded-sm flex flex-col items-center gap-2 group">
+<span class="text-[0.6rem] font-bold tracking-[0.2em] opacity-80 uppercase">OXYGEN COST</span>
+<span class="font-headline font-bold text-lg tracking-widest">WAIT / REST</span>
+<div class="w-full h-1 bg-outline-variant/30 mt-1">
+<div class="w-3/4 h-full bg-primary"></div>
+</div>
+</button>
+</div>
+<div class="mt-6 flex justify-between items-center text-[0.6rem] font-bold tracking-widest text-on-surface-variant uppercase opacity-50">
+<span>SYSTEM: NEURAL LINK ACTIVE</span>
+<span>ID: EXP-8848</span>
+</div>
+</div>
+<!-- BOTTOM HUD: GAUGES -->
+<div class="absolute bottom-24 left-0 w-full px-6 z-20 flex justify-between items-end">
+<!-- Oxygen Gauge -->
+<div class="flex flex-col gap-2 w-full max-w-[200px]">
+<div class="flex justify-between items-center px-1">
+<span class="text-[0.6rem] font-bold tracking-widest text-primary uppercase">OXYGEN LEVEL</span>
+<span class="text-xs font-headline font-bold text-primary">22%</span>
+</div>
+<div class="h-4 w-full bg-surface-container-lowest border border-outline-variant/20 p-0.5">
+<div class="h-full bg-primary-container relative">
+<div class="absolute inset-0 bg-white/20 animate-pulse"></div>
+</div>
+</div>
+<div class="flex items-center gap-2 text-[0.6rem] font-black text-primary uppercase">
+<span class="material-symbols-outlined text-sm" data-icon="error">error</span>
+<span>LOW OXYGEN WARNING</span>
+</div>
+</div>
+<!-- Player Fatigue -->
+<div class="flex flex-col gap-2 w-full max-w-[200px] items-end">
+<div class="flex justify-between items-center px-1 w-full">
+<span class="text-[0.6rem] font-bold tracking-widest text-on-surface-variant uppercase">FATIGUE</span>
+<span class="text-xs font-headline font-bold text-on-surface">68%</span>
+</div>
+<div class="h-4 w-full bg-surface-container-lowest border border-outline-variant/20 p-0.5">
+<div class="h-full bg-secondary-container w-[68%]"></div>
+</div>
+<span class="text-[0.6rem] font-bold text-on-surface-variant uppercase italic">HEART RATE: 142 BPM</span>
+</div>
+</div>
+</main>
+<!-- BOTTOM NAV BAR -->
+<nav class="bg-[#1b1b1c]/80 backdrop-blur-2xl fixed bottom-0 left-0 w-full h-20 flex justify-around items-center px-4 pb-safe z-50 border-t border-[#5a4136]/15">
+<a class="flex flex-col items-center justify-center text-slate-500 py-2 px-6 hover:text-[#ffb693] transition-transform active:translate-y-0.5" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="home_work">home_work</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-bold tracking-widest uppercase">BASE CAMP</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-500 py-2 px-6 hover:text-[#ffb693] transition-transform active:translate-y-0.5" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="storefront">storefront</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-bold tracking-widest uppercase">THE OUTPOST</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#ff6b00] bg-[#ff6b00]/10 rounded-sm py-2 px-6 transition-transform active:translate-y-0.5" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="explore">explore</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-bold tracking-widest uppercase">THE ASCENT</span>
+</a>
+</nav>
+<!-- TOPOGRAPHICAL MAP TEXTURE OVERLAY -->
+<div class="fixed inset-0 pointer-events-none opacity-[0.03] z-[5]" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAUnt39EPNSCfEJ3bP81oMjCGH-leZUmBQ4XC61sjsDsT5iOs61dZ94m0tmlcInGiEWQ8_QGsbKBbdzplZmi-rNi5-m4_pKAxU8ldaIgdsm0MIAvBuL3gkAoaM2GPiU8DSLK6bfVcZXmtsD3EVdvRMV3gPi6rWSFLYXU4woaTY9HtaAxsu0p68QhhbpnVBktbL-zM3gs7QdRbr-29FwayCLa2wJcUsvuqZpAAiqhXZeyunaAfnb2Z2cxyg7JXWm2mFg1s4dgqXY2nSk');"></div>
+</body></html>

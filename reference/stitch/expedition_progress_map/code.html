@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ALT-EXPEDITION | K2 MISSION CONTROL</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-dim": "#131314",
+                        "surface-container": "#1f1f20",
+                        "surface-bright": "#39393a",
+                        "on-secondary-fixed-variant": "#444749",
+                        "surface-container-low": "#1b1b1c",
+                        "inverse-on-surface": "#303031",
+                        "primary-fixed": "#ffdbcc",
+                        "on-secondary": "#2d3133",
+                        "on-primary-fixed-variant": "#7a3000",
+                        "on-primary": "#561f00",
+                        "secondary": "#c4c7c9",
+                        "secondary-fixed-dim": "#c4c7c9",
+                        "surface-container-lowest": "#0e0e0f",
+                        "on-tertiary-fixed": "#001d35",
+                        "surface-tint": "#ffb693",
+                        "secondary-container": "#464a4b",
+                        "tertiary-container": "#059eff",
+                        "primary": "#ffb693",
+                        "background": "#131314",
+                        "on-secondary-fixed": "#191c1e",
+                        "surface-container-highest": "#353436",
+                        "tertiary": "#9ccaff",
+                        "on-tertiary-container": "#003357",
+                        "on-surface-variant": "#e2bfb0",
+                        "inverse-primary": "#a04100",
+                        "tertiary-fixed": "#d0e4ff",
+                        "outline-variant": "#5a4136",
+                        "on-tertiary-fixed-variant": "#00497b",
+                        "surface-variant": "#353436",
+                        "primary-fixed-dim": "#ffb693",
+                        "on-error": "#690005",
+                        "on-background": "#e5e2e3",
+                        "on-tertiary": "#003257",
+                        "error-container": "#93000a",
+                        "on-primary-fixed": "#351000",
+                        "outline": "#a98a7d",
+                        "on-primary-container": "#572000",
+                        "error": "#ffb4ab",
+                        "inverse-surface": "#e5e2e3",
+                        "surface-container-high": "#2a2a2b",
+                        "primary-container": "#ff6b00",
+                        "secondary-fixed": "#e0e3e5",
+                        "on-surface": "#e5e2e3",
+                        "on-secondary-container": "#b6b9bb",
+                        "surface": "#131314",
+                        "on-error-container": "#ffdad6",
+                        "tertiary-fixed-dim": "#9ccaff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "headline": ["Space Grotesk"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #131314;
+            color: #e5e2e3;
+            font-family: 'Inter', sans-serif;
+        }
+        .header-anchor { font-family: 'Space Grotesk', sans-serif; }
+    </style>
+</head>
+<body class="overflow-hidden">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 bg-[#131314]/80 backdrop-blur-xl border-b border-[#5a4136]/15 shadow-[0_40px_40px_rgba(0,0,0,0.05)] flex justify-between items-center px-6 h-16 w-full">
+<div class="flex items-center gap-8">
+<span class="text-xl font-bold tracking-widest text-[#ff6b00] font-['Space_Grotesk'] uppercase">ALT-EXPEDITION</span>
+<nav class="hidden md:flex gap-6">
+<a class="text-[#ff6b00] font-bold font-['Space_Grotesk'] tracking-tighter uppercase text-sm" href="#">Route Map</a>
+<a class="text-gray-400 font-['Space_Grotesk'] tracking-tighter uppercase text-sm hover:text-white transition-colors" href="#">Logistics</a>
+<a class="text-gray-400 font-['Space_Grotesk'] tracking-tighter uppercase text-sm hover:text-white transition-colors" href="#">Vitals</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="flex items-center gap-2 px-3 py-1 bg-primary-container text-on-primary font-bold text-xs rounded-sm active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-sm">warning</span> SOS
+            </button>
+<span class="material-symbols-outlined text-gray-400 cursor-pointer hover:text-white">settings</span>
+<span class="material-symbols-outlined text-gray-400 cursor-pointer hover:text-white">notifications</span>
+</div>
+</header>
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-full w-64 z-40 bg-[#1b1b1c] border-r border-[#5a4136]/15 flex flex-col pt-20 pb-6 hidden md:flex">
+<div class="px-6 mb-8">
+<div class="flex items-center gap-3 mb-4">
+<div class="w-10 h-10 bg-surface-container-highest rounded-sm border border-outline-variant/30 flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Expedition Leader Profile portrait of a weathered mountain climber with technical gear in snowy environment" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA2BxjEOG3H6RgHLJU4bXkOhKsoEwvymPRXJvnl5XMxxwHfWG0Qd6fmfiG2mF2_GajDCAUByLfyQpKWNAlVgs03hFl3otv-zJy4E8zcv_qY6IfOR81OrRgPG3g_oeNNICirvqCi6K6VwICZaDgGnF2iBaxmZaE73KNGRByX8Y7iaKWazFnjTaS-GvvATge2xDmhUOyXF4VbTOPfJSVoUev0TqRRbcURjzNpnwfmdqIsvso5uTca4uHyEp0yYEDV-X6nmC010hqKf2l-"/>
+</div>
+<div>
+<div class="text-[#ff6b00] font-black font-['Space_Grotesk'] text-sm tracking-widest">K2 PEAK</div>
+<div class="text-gray-500 text-[10px] font-['Space_Grotesk'] uppercase tracking-widest">8,611m | ACTIVE</div>
+</div>
+</div>
+<button class="w-full py-2 bg-primary-container text-black font-black text-[11px] tracking-widest font-['Space_Grotesk'] uppercase active:translate-x-1 transition-all">
+                SYNC GEAR
+            </button>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-4 px-6 py-3 bg-[#ff6b00] text-black font-black font-['Space_Grotesk'] text-[11px] uppercase tracking-widest transition-all" href="#">
+<span class="material-symbols-outlined">terrain</span> Route Map
+            </a>
+<a class="flex items-center gap-4 px-6 py-3 text-gray-500 hover:bg-[#2a2a2b] hover:text-[#ff6b00] font-['Space_Grotesk'] text-[11px] uppercase tracking-widest transition-all" href="#">
+<span class="material-symbols-outlined">inventory_2</span> Logistics
+            </a>
+<a class="flex items-center gap-4 px-6 py-3 text-gray-500 hover:bg-[#2a2a2b] hover:text-[#ff6b00] font-['Space_Grotesk'] text-[11px] uppercase tracking-widest transition-all" href="#">
+<span class="material-symbols-outlined">groups</span> Team
+            </a>
+<a class="flex items-center gap-4 px-6 py-3 text-gray-500 hover:bg-[#2a2a2b] hover:text-[#ff6b00] font-['Space_Grotesk'] text-[11px] uppercase tracking-widest transition-all" href="#">
+<span class="material-symbols-outlined">ecg_heart</span> Vitals
+            </a>
+<a class="flex items-center gap-4 px-6 py-3 text-gray-500 hover:bg-[#2a2a2b] hover:text-[#ff6b00] font-['Space_Grotesk'] text-[11px] uppercase tracking-widest transition-all" href="#">
+<span class="material-symbols-outlined">cyclone</span> Weather
+            </a>
+</nav>
+<div class="mt-auto px-6">
+<a class="flex items-center gap-4 py-3 text-gray-500 hover:text-white transition-colors font-['Space_Grotesk'] text-[11px] uppercase tracking-widest" href="#">
+<span class="material-symbols-outlined">logout</span> Log Out
+            </a>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="md:ml-64 pt-16 h-screen flex flex-col md:flex-row relative overflow-hidden bg-surface-dim">
+<!-- Large Tactical Map Layer -->
+<div class="absolute inset-0 z-0">
+<div class="w-full h-full bg-surface-container-lowest opacity-20 absolute pointer-events-none" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAgwSvPCsL_EdiEunjFvptPSRTBAAy5K2faw2fl0ulxqTlN4JNraT-MZYV3uQd37Bg6WdzailwvsCd6MIyigVDc_Gr1EqSBJ9jixBHJstx-aHmpa2YyB7oJEFMz4oe_EeLoA0a3OAkr-qIBq0jP7J8eZusasC9i7VS4CjF0R98l0FRA34JofkLoJ_8-njfeZl9J2LrvNjV9fLO65jkaVA_78Zze2rzRzUA14JBpoYWzTAaVNu6JSj-pcQ-LMtmrMNxyZRdFl5-VGNrM');"></div>
+<img class="w-full h-full object-cover grayscale brightness-50 contrast-125" data-alt="Highly detailed 3D topographical tactical map of K2 mountain range with blue and orange vector route lines and camp markers" data-location="K2, Himalayas" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDFyDgqql3tPYQYcCMv-pvXfnpfiVyUEwGmkz-6RxU6acHGPEShjT30D5bST86M4kXRbUVx0F_KCq03QMILGyTVAOJIwF1wJOgCu_FKUNQx0n-oqbUQSylIQguDE4drDmKRtiZpBpLxP93bQslUMV5PgZDNXsmsMp9ki5sNNq5_ndNGWrMldM0js1SFZrEDwn1rNtFz59fYDEzaF81eSVFxM_fJ3fk2CPgnlzMo8RMm3U_-9solmhWqOajtT-Y5Wk4VQW3XJWEFZqhQ"/>
+<!-- Simulated HUD Overlays -->
+<div class="absolute inset-0 bg-gradient-to-t from-surface-dim via-transparent to-transparent"></div>
+</div>
+<!-- Content Overlay Container -->
+<div class="relative z-10 w-full h-full flex flex-col md:flex-row p-6 gap-6">
+<!-- Left Side: Resources & Status -->
+<div class="flex flex-col gap-6 w-full md:w-80 pointer-events-none">
+<!-- Telemetry Cluster -->
+<div class="bg-surface-container/70 backdrop-blur-xl p-4 border-l-2 border-primary-container pointer-events-auto">
+<div class="flex flex-col gap-4">
+<div>
+<span class="text-[10px] text-on-surface-variant font-['Space_Grotesk'] uppercase tracking-widest block mb-1">ALTITUDE</span>
+<div class="flex items-baseline gap-2">
+<span class="text-4xl font-bold font-['Space_Grotesk'] text-on-surface tracking-tighter">6,400</span>
+<span class="text-sm text-[#ff6b00] font-black uppercase">m</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4 border-t border-outline-variant/20 pt-4">
+<div>
+<span class="text-[9px] text-gray-500 font-['Space_Grotesk'] uppercase tracking-tighter block">TEMP</span>
+<span class="text-xl font-bold font-['Space_Grotesk'] text-on-surface">-32°C</span>
+</div>
+<div>
+<span class="text-[9px] text-gray-500 font-['Space_Grotesk'] uppercase tracking-tighter block">WIND</span>
+<span class="text-xl font-bold font-['Space_Grotesk'] text-on-surface">25 <span class="text-[10px] text-gray-400">km/h</span></span>
+</div>
+</div>
+</div>
+</div>
+<!-- Resource Gauges -->
+<div class="bg-surface-container/70 backdrop-blur-xl p-4 border-l-2 border-outline-variant/30 pointer-events-auto">
+<div class="text-[10px] text-[#ff6b00] font-['Space_Grotesk'] font-bold uppercase tracking-[0.2em] mb-4">RESOURCES // CRITICAL</div>
+<div class="grid grid-cols-3 gap-6 h-48">
+<div class="flex flex-col items-center gap-2">
+<div class="w-3 flex-1 bg-surface-container-lowest relative rounded-none overflow-hidden">
+<div class="absolute bottom-0 w-full bg-primary-container h-[42%]"></div>
+</div>
+<span class="text-[8px] font-black text-gray-500 rotate-90 origin-center whitespace-nowrap uppercase tracking-widest mt-6">O2 RESERVE</span>
+</div>
+<div class="flex flex-col items-center gap-2">
+<div class="w-3 flex-1 bg-surface-container-lowest relative rounded-none overflow-hidden">
+<div class="absolute bottom-0 w-full bg-tertiary-container h-[68%]"></div>
+</div>
+<span class="text-[8px] font-black text-gray-500 rotate-90 origin-center whitespace-nowrap uppercase tracking-widest mt-6">FOOD RATIONS</span>
+</div>
+<div class="flex flex-col items-center gap-2">
+<div class="w-3 flex-1 bg-surface-container-lowest relative rounded-none overflow-hidden">
+<div class="absolute bottom-0 w-full bg-tertiary h-[15%]"></div>
+<div class="absolute bottom-0 w-full bg-error h-[15%] animate-pulse"></div>
+</div>
+<span class="text-[8px] font-black text-gray-500 rotate-90 origin-center whitespace-nowrap uppercase tracking-widest mt-6">WATER SUPPLY</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Center Content (Map Labels/Markers) -->
+<div class="flex-1 relative hidden md:block">
+<div class="absolute top-1/4 right-1/4 flex flex-col items-center">
+<div class="w-4 h-4 rounded-full border-2 border-primary-container bg-surface-container-lowest animate-ping absolute"></div>
+<div class="w-4 h-4 rounded-full border-2 border-primary-container bg-surface-container-lowest relative z-10"></div>
+<div class="bg-surface-container-highest/90 backdrop-blur px-3 py-1 mt-2 border border-outline-variant/30">
+<span class="text-[10px] font-bold font-['Space_Grotesk'] text-white">CAMP 3 (BASE)</span>
+</div>
+</div>
+<div class="absolute bottom-1/3 left-1/2">
+<div class="w-2 h-2 bg-tertiary-container rounded-full mb-1"></div>
+<div class="bg-surface-container-low/80 backdrop-blur px-2 py-1 border-l-2 border-tertiary-container">
+<span class="text-[9px] font-medium text-on-surface-variant">TRAILHEAD A-12</span>
+</div>
+</div>
+</div>
+<!-- Right Side: Team Status -->
+<div class="w-full md:w-80 flex flex-col gap-4 pointer-events-none">
+<div class="bg-surface-container-highest/60 backdrop-blur-2xl p-4 border border-outline-variant/15 pointer-events-auto">
+<div class="flex justify-between items-center mb-6">
+<span class="text-[10px] font-black font-['Space_Grotesk'] text-[#ff6b00] tracking-widest uppercase">EXPEDITION TEAM</span>
+<span class="text-[10px] text-gray-500 font-mono">ID: 992-DELTA</span>
+</div>
+<div class="space-y-3">
+<!-- Team Member 1 -->
+<div class="p-3 bg-surface-container-low/40 border-l-2 border-tertiary-container flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 bg-surface-bright rounded-none border border-outline-variant/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-sm text-gray-400">person</span>
+</div>
+<div>
+<div class="text-[11px] font-bold text-white uppercase tracking-wider">Lapa</div>
+<div class="flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary-container"></span>
+<span class="text-[9px] font-black text-tertiary uppercase tracking-tighter">STABLE</span>
+</div>
+</div>
+</div>
+<div class="flex flex-col items-end">
+<span class="material-symbols-outlined text-primary text-sm" style="font-variation-settings: 'FILL' 1;">ecg_heart</span>
+<span class="text-[10px] font-mono text-gray-400">72 BPM</span>
+</div>
+</div>
+<!-- Team Member 2 -->
+<div class="p-3 bg-surface-container-low/40 border-l-2 border-[#ff6b00] flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 bg-surface-bright rounded-none border border-outline-variant/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-sm text-gray-400">person</span>
+</div>
+<div>
+<div class="text-[11px] font-bold text-white uppercase tracking-wider">Mingma</div>
+<div class="flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-[#ff6b00] animate-pulse"></span>
+<span class="text-[9px] font-black text-[#ff6b00] uppercase tracking-tighter">FATIGUED</span>
+</div>
+</div>
+</div>
+<div class="flex flex-col items-end">
+<span class="material-symbols-outlined text-error text-sm" style="font-variation-settings: 'FILL' 1;">ecg_heart</span>
+<span class="text-[10px] font-mono text-gray-400">114 BPM</span>
+</div>
+</div>
+<!-- Team Member 3 -->
+<div class="p-3 bg-surface-container-low/40 border-l-2 border-outline-variant/50 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 bg-surface-bright rounded-none border border-outline-variant/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-sm text-gray-400">person</span>
+</div>
+<div>
+<div class="text-[11px] font-bold text-white uppercase tracking-wider">Tenzing</div>
+<div class="flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-gray-500"></span>
+<span class="text-[9px] font-black text-gray-500 uppercase tracking-tighter">OFFLINE</span>
+</div>
+</div>
+</div>
+<div class="flex flex-col items-end opacity-50">
+<span class="material-symbols-outlined text-gray-500 text-sm">ecg_heart</span>
+<span class="text-[10px] font-mono text-gray-500">-- BPM</span>
+</div>
+</div>
+</div>
+<button class="w-full mt-6 py-2 border border-outline-variant/30 text-[10px] font-black font-['Space_Grotesk'] text-on-surface-variant hover:bg-surface-container transition-colors uppercase tracking-widest">
+                        OPEN COMMS CHNL
+                    </button>
+</div>
+<!-- Mission Clock -->
+<div class="mt-auto bg-primary-container text-black p-4 flex flex-col pointer-events-auto">
+<span class="text-[9px] font-black font-['Space_Grotesk'] uppercase tracking-[0.3em]">MISSION TIME</span>
+<span class="text-3xl font-black font-['Space_Grotesk'] tracking-tighter">12:44:08</span>
+<div class="mt-2 text-[9px] font-bold uppercase opacity-80">ESTIMATED WINDOW: 4H 12M</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 bg-[#131314]/90 backdrop-blur-2xl border-t border-[#ff6b00]/20 shadow-2xl h-20 z-50 md:hidden">
+<div class="flex flex-col items-center justify-center text-[#ff6b00] border-t-2 border-[#ff6b00] pt-2">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-bold">DASH</span>
+</div>
+<div class="flex flex-col items-center justify-center text-gray-600">
+<span class="material-symbols-outlined">map</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-bold">MAP</span>
+</div>
+<div class="flex flex-col items-center justify-center text-gray-600">
+<span class="material-symbols-outlined">backpack</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-bold">GEAR</span>
+</div>
+<div class="flex flex-col items-center justify-center text-gray-600">
+<span class="material-symbols-outlined">radio</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-bold">COMMS</span>
+</div>
+</nav>
+</body></html>

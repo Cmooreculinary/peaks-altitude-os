@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ALTITUDE_OS | PEAK_SELECTION_HUB</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-container": "#b6b9bb",
+                        "surface-container-lowest": "#0e0e0f",
+                        "on-tertiary-container": "#003357",
+                        "on-primary-fixed-variant": "#7a3000",
+                        "outline": "#a98a7d",
+                        "surface-container": "#1f1f20",
+                        "error-container": "#93000a",
+                        "on-tertiary-fixed": "#001d35",
+                        "on-tertiary": "#003257",
+                        "on-background": "#e5e2e3",
+                        "surface": "#131314",
+                        "primary-fixed": "#ffdbcc",
+                        "on-surface-variant": "#e2bfb0",
+                        "on-secondary-fixed-variant": "#444749",
+                        "inverse-surface": "#e5e2e3",
+                        "secondary-container": "#464a4b",
+                        "primary-fixed-dim": "#ffb693",
+                        "outline-variant": "#5a4136",
+                        "on-secondary": "#2d3133",
+                        "on-error-container": "#ffdad6",
+                        "tertiary": "#9ccaff",
+                        "on-tertiary-fixed-variant": "#00497b",
+                        "tertiary-container": "#059eff",
+                        "primary-container": "#ff6b00",
+                        "surface-container-low": "#1b1b1c",
+                        "on-secondary-fixed": "#191c1e",
+                        "surface-variant": "#353436",
+                        "on-surface": "#e5e2e3",
+                        "secondary-fixed-dim": "#c4c7c9",
+                        "on-primary": "#561f00",
+                        "inverse-primary": "#a04100",
+                        "inverse-on-surface": "#303031",
+                        "background": "#131314",
+                        "surface-bright": "#39393a",
+                        "surface-tint": "#ffb693",
+                        "surface-container-highest": "#353436",
+                        "tertiary-fixed-dim": "#9ccaff",
+                        "tertiary-fixed": "#d0e4ff",
+                        "primary": "#ffb693",
+                        "surface-dim": "#131314",
+                        "secondary-fixed": "#e0e3e5",
+                        "on-primary-container": "#572000",
+                        "error": "#ffb4ab",
+                        "on-error": "#690005",
+                        "secondary": "#c4c7c9",
+                        "surface-container-high": "#2a2a2b",
+                        "on-primary-fixed": "#351000"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "headline": ["Space Grotesk"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #131314; }
+        ::-webkit-scrollbar-thumb { background: #5a4136; border-radius: 2px; }
+        .glass-panel {
+            background: rgba(31, 31, 32, 0.7);
+            backdrop-filter: blur(20px);
+        }
+        .topographical-bg {
+            background-image: url("data:image/svg+xml,%3Csvg width='400' height='400' viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 310.5C50 280 150 350 200 320C250 290 350 360 400 330V400H0V310.5Z' fill='%235a4136' fill-opacity='0.05'/%3E%3Cpath d='M0 210.5C80 180 180 250 260 220C340 190 380 260 400 230V400H0V210.5Z' fill='%235a4136' fill-opacity='0.03'/%3E%3C/svg%3E");
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body topographical-bg min-h-screen">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 bg-zinc-950/80 backdrop-blur-xl border-b border-zinc-800/50 shadow-[0_4px_30px_rgba(0,0,0,0.5)] flex justify-between items-center px-6 h-16 w-full">
+<div class="flex items-center gap-8">
+<span class="text-2xl font-bold tracking-tighter text-orange-600 font-['Space_Grotesk']">ALTITUDE_OS</span>
+<nav class="hidden md:flex gap-6 items-center h-full">
+<a class="text-orange-500 font-bold border-b-2 border-orange-600 h-full flex items-center px-2 cursor-crosshair active:scale-95 font-['Space_Grotesk'] tracking-tight" href="#">MISSION_HUB</a>
+<a class="text-zinc-400 font-medium hover:text-orange-400 transition-colors duration-200 cursor-crosshair active:scale-95 font-['Space_Grotesk'] tracking-tight" href="#">FLEET</a>
+<a class="text-zinc-400 font-medium hover:text-orange-400 transition-colors duration-200 cursor-crosshair active:scale-95 font-['Space_Grotesk'] tracking-tight" href="#">LOGISTICS</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative group">
+<span class="material-symbols-outlined text-zinc-400 group-hover:text-orange-400 cursor-pointer">settings</span>
+</div>
+<div class="relative group">
+<span class="material-symbols-outlined text-zinc-400 group-hover:text-orange-400 cursor-pointer">notifications</span>
+<span class="absolute -top-1 -right-1 w-2 h-2 bg-primary-container rounded-full"></span>
+</div>
+<div class="flex items-center gap-2 pl-4 border-l border-zinc-800">
+<div class="text-right hidden sm:block">
+<p class="text-[10px] font-headline uppercase tracking-widest text-zinc-500">COMMANDER</p>
+<p class="text-xs font-headline font-bold text-on-surface">V_KOROLOV</p>
+</div>
+<span class="material-symbols-outlined text-3xl text-zinc-400 cursor-pointer">account_circle</span>
+</div>
+</div>
+</header>
+<!-- SideNavBar (Filter Panel) -->
+<aside class="fixed left-0 top-16 h-[calc(100vh-64px)] w-64 bg-zinc-900/60 backdrop-blur-lg border-r border-zinc-800/30 flex flex-col pt-8 z-40 hidden lg:flex">
+<div class="px-6 mb-8">
+<h2 class="text-orange-600 font-black font-['Space_Grotesk'] uppercase text-xs tracking-widest">SELECTION_HUB</h2>
+<p class="text-[10px] text-zinc-500 font-headline tracking-tighter">SECTOR_K_BRAVO</p>
+</div>
+<nav class="flex flex-col gap-1">
+<div class="bg-orange-600/10 text-orange-500 border-l-4 border-orange-600 py-3 px-6 flex items-center gap-3 transition-all cursor-pointer">
+<span class="material-symbols-outlined text-sm">filter_list</span>
+<span class="font-['Space_Grotesk'] uppercase text-xs tracking-widest">ALTITUDE</span>
+</div>
+<div class="text-zinc-500 py-3 px-6 flex items-center gap-3 hover:bg-zinc-800/50 hover:text-zinc-200 transition-all cursor-pointer">
+<span class="material-symbols-outlined text-sm">leaderboard</span>
+<span class="font-['Space_Grotesk'] uppercase text-xs tracking-widest">DIFFICULTY</span>
+</div>
+<div class="text-zinc-500 py-3 px-6 flex items-center gap-3 hover:bg-zinc-800/50 hover:text-zinc-200 transition-all cursor-pointer">
+<span class="material-symbols-outlined text-sm">query_stats</span>
+<span class="font-['Space_Grotesk'] uppercase text-xs tracking-widest">SUCCESS_RATE</span>
+</div>
+<div class="text-zinc-500 py-3 px-6 flex items-center gap-3 hover:bg-zinc-800/50 hover:text-zinc-200 transition-all cursor-pointer">
+<span class="material-symbols-outlined text-sm">cloud</span>
+<span class="font-['Space_Grotesk'] uppercase text-xs tracking-widest">WEATHER</span>
+</div>
+</nav>
+<div class="mt-auto p-6 space-y-4">
+<button class="w-full bg-primary-container text-on-primary py-3 rounded-sm font-headline font-bold text-xs tracking-widest hover:brightness-110 active:scale-[0.98] transition-all">
+                INITIATE_CLIMB
+            </button>
+<div class="pt-4 border-t border-zinc-800/50">
+<div class="text-zinc-500 py-2 flex items-center gap-3 hover:text-zinc-200 transition-all cursor-pointer">
+<span class="material-symbols-outlined text-sm">terminal</span>
+<span class="font-['Space_Grotesk'] uppercase text-[10px] tracking-widest">SYSTEM_LOG</span>
+</div>
+<div class="text-zinc-500 py-2 flex items-center gap-3 hover:text-zinc-200 transition-all cursor-pointer">
+<span class="material-symbols-outlined text-sm">help</span>
+<span class="font-['Space_Grotesk'] uppercase text-[10px] tracking-widest">SUPPORT</span>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="lg:pl-64 pt-16 min-h-screen">
+<div class="p-8 max-w-7xl mx-auto">
+<!-- Dashboard Header -->
+<header class="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div>
+<h1 class="font-headline text-5xl md:text-7xl font-bold tracking-tighter text-on-background leading-none">PEAK_SELECT</h1>
+<div class="mt-2 flex items-center gap-4">
+<span class="bg-secondary-container text-on-secondary-container text-[10px] px-2 py-0.5 font-headline tracking-widest">REGION: KARAKORAM_RANGE</span>
+<span class="flex items-center gap-1 text-primary-fixed-dim text-[10px] font-headline tracking-widest">
+<span class="material-symbols-outlined text-xs">location_on</span> 
+                            35.8811° N, 76.5133° E
+                        </span>
+</div>
+</div>
+<div class="glass-panel p-4 border-l-2 border-primary-container">
+<p class="text-[10px] font-headline text-zinc-500 tracking-widest mb-1">AVAILABLE_MISSIONS</p>
+<div class="flex items-end gap-2">
+<span class="text-4xl font-headline font-bold leading-none">12</span>
+<span class="text-zinc-500 font-headline text-xs mb-1">/ ACTIVE_NODES</span>
+</div>
+</div>
+</header>
+<!-- 12-Card Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+<!-- Card 1: PEAK K2 -->
+<article class="group relative bg-surface-container-low border border-outline-variant/10 overflow-hidden hover:border-primary-container/40 transition-all duration-300">
+<div class="relative h-48 overflow-hidden">
+<img class="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500" data-alt="dramatic aerial view of K2 peak at sunset with jagged snow-covered ridges and deep blue shadows" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBF5ZvOD-tkDe5AM8XjKl-x6STCtCfcpjpUjfBm_O4pHoV54MFo37KDB4qzO3pNm8OA3CN_lF0DKVxddnV1M1asWzCmA5jB7fKA9xMCdzwTsItgSQOvh77vMTVXzR6KZBMmb2D7NQC5o6C5gn35lkocW2ND9WQCM7X7agRnD_f86oxXbJynxPvlPejDB6xhU_esVZdOs9NBjwguDO1sU-868v3CYjeIJYxAEIZRuekZA0IuUvCW0H6RyID3RKVhyVTA7EFrHEPGvlZy"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-low to-transparent"></div>
+<div class="absolute top-4 left-4 bg-primary-container text-on-primary px-2 py-0.5 text-[10px] font-headline font-bold">EXTREME_RISK</div>
+</div>
+<div class="p-6 relative">
+<div class="flex justify-between items-start mb-4">
+<div>
+<h3 class="font-headline text-2xl font-bold tracking-tight text-on-background">PEAK K2</h3>
+<p class="text-[10px] text-zinc-500 font-headline uppercase tracking-widest">THE_SAVAGE_MOUNTAIN</p>
+</div>
+<div class="text-right">
+<p class="text-xl font-headline font-medium text-primary">8,611 M</p>
+<p class="text-[8px] text-zinc-500 font-headline uppercase tracking-tighter">SURFACE_LEVEL_ALT</p>
+</div>
+</div>
+<div class="space-y-4">
+<div class="bg-surface-container-lowest p-3 border-l border-zinc-800 group-hover:border-primary-container transition-colors">
+<p class="text-[9px] font-headline text-zinc-500 uppercase tracking-widest mb-2">REQUIRED_GEAR</p>
+<div class="flex flex-wrap gap-2">
+<span class="text-[8px] font-headline bg-surface-variant text-on-surface-variant px-2 py-0.5 uppercase">HEATED PARKA</span>
+<span class="text-[8px] font-headline bg-surface-variant text-on-surface-variant px-2 py-0.5 uppercase">ELITE OXYGEN</span>
+<span class="text-[8px] font-headline bg-surface-variant text-on-surface-variant px-2 py-0.5 uppercase">CARBON SPIKES</span>
+</div>
+</div>
+<button class="w-full group-hover:bg-primary-container group-hover:text-on-primary border border-primary-container/30 text-primary transition-all py-2 font-headline font-bold text-[10px] tracking-widest uppercase">
+                                SELECT_MISSION
+                            </button>
+</div>
+</div>
+</article>
+<!-- Card 2: PEAK K6 -->
+<article class="group relative bg-surface-container-low border border-outline-variant/10 overflow-hidden hover:border-primary-container/40 transition-all duration-300">
+<div class="relative h-48 overflow-hidden">
+<img class="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500" data-alt="majestic high-altitude mountain peak with sharp granite spires piercing through a sea of clouds" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCNsvd2TrH4Uy5WW-RS_bYVI3gslHyY7drMkOdo71a6ze-D-ehLyvDzYeXrzkSx_2WgmL-t5j_JXsIwvVC8lGuoFncW1ETPA8vc7ohJ7lW20lsaYxo1XkcG90sVkU0jLLn7u6tmyu6xJRAaH25D62_Nl44j8dL6FYKrylVXTAL1HvytsOHVwiEfqklYkhhfb2QCi0EbnrK8cXaPO_I0V4vsbngaR32VBp7bBHp3dh3KUJoyCO8Ef_wP7qdNcrTiAFnW_AGAz8TLlOHj"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-low to-transparent"></div>
+<div class="absolute top-4 left-4 bg-tertiary-container text-on-tertiary px-2 py-0.5 text-[10px] font-headline font-bold uppercase">HIGH_VALOR</div>
+</div>
+<div class="p-6 relative">
+<div class="flex justify-between items-start mb-4">
+<div>
+<h3 class="font-headline text-2xl font-bold tracking-tight text-on-background">PEAK K6</h3>
+<p class="text-[10px] text-zinc-500 font-headline uppercase tracking-widest">BALTISTAN_SENTINEL</p>
+</div>
+<div class="text-right">
+<p class="text-xl font-headline font-medium text-primary">7,282 M</p>
+<p class="text-[8px] text-zinc-500 font-headline uppercase tracking-tighter">SURFACE_LEVEL_ALT</p>
+</div>
+</div>
+<div class="space-y-4">
+<div class="bg-surface-container-lowest p-3 border-l border-zinc-800 group-hover:border-primary-container transition-colors">
+<p class="text-[9px] font-headline text-zinc-500 uppercase tracking-widest mb-2">REQUIRED_GEAR</p>
+<div class="flex flex-wrap gap-2">
+<span class="text-[8px] font-headline bg-surface-variant text-on-surface-variant px-2 py-0.5 uppercase">THERMAL SHELL</span>
+<span class="text-[8px] font-headline bg-surface-variant text-on-surface-variant px-2 py-0.5 uppercase">STD OXYGEN</span>
+</div>
+</div>
+<button class="w-full group-hover:bg-primary-container group-hover:text-on-primary border border-primary-container/30 text-primary transition-all py-2 font-headline font-bold text-[10px] tracking-widest uppercase">
+                                SELECT_MISSION
+                            </button>
+</div>
+</div>
+</article>
+<!-- Card 3: PEAK K12 -->
+<article class="group relative bg-surface-container-low border border-outline-variant/10 overflow-hidden hover:border-primary-container/40 transition-all duration-300">
+<div class="relative h-48 overflow-hidden">
+<img class="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500" data-alt="isolated snowy peak under a clear midnight sky with shimmering stars and technical mapping overlay feel" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBeGdky6HNcBdexweCcmqsqp5MzOCNGsq_OODEUl4D6mMuQzzFTqfqtCvwH3BlS2k-XYZOYoG0SSUb8apmaWULwCf5-TZuHtgYpMT2cFPkMaRFFSM9rrcIrLwLSJlfPRcmFq99rkTy0I_Z-n3DDLwMELE9gZeEwlmyA1w5W2fVxSMnVi-dFj7NTCEL9_TDZGopZZrs_8OwtuZCzRcRtHMIvxi7PQFTT-z3MbIPeCqdzMPNeeY-wJqXcwLs-1HQjxaA3XlIuIcn2zwSO"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-low to-transparent"></div>
+<div class="absolute top-4 left-4 bg-zinc-700 text-zinc-100 px-2 py-0.5 text-[10px] font-headline font-bold uppercase">STANDARD_OPS</div>
+</div>
+<div class="p-6 relative">
+<div class="flex justify-between items-start mb-4">
+<div>
+<h3 class="font-headline text-2xl font-bold tracking-tight text-on-background">PEAK K12</h3>
+<p class="text-[10px] text-zinc-500 font-headline uppercase tracking-widest">SALTORO_REACH</p>
+</div>
+<div class="text-right">
+<p class="text-xl font-headline font-medium text-primary">7,428 M</p>
+<p class="text-[8px] text-zinc-500 font-headline uppercase tracking-tighter">SURFACE_LEVEL_ALT</p>
+</div>
+</div>
+<div class="space-y-4">
+<div class="bg-surface-container-lowest p-3 border-l border-zinc-800 group-hover:border-primary-container transition-colors">
+<p class="text-[9px] font-headline text-zinc-500 uppercase tracking-widest mb-2">REQUIRED_GEAR</p>
+<div class="flex flex-wrap gap-2">
+<span class="text-[8px] font-headline bg-surface-variant text-on-surface-variant px-2 py-0.5 uppercase">LIGHT HARNESS</span>
+<span class="text-[8px] font-headline bg-surface-variant text-on-surface-variant px-2 py-0.5 uppercase">GPS RELAY</span>
+</div>
+</div>
+<button class="w-full group-hover:bg-primary-container group-hover:text-on-primary border border-primary-container/30 text-primary transition-all py-2 font-headline font-bold text-[10px] tracking-widest uppercase">
+                                SELECT_MISSION
+                            </button>
+</div>
+</div>
+</article>
+<!-- Card 4: PEAK K1 -->
+<article class="group relative bg-surface-container-low border border-outline-variant/10 overflow-hidden hover:border-primary-container/40 transition-all duration-300">
+<div class="relative h-48 overflow-hidden">
+<img class="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500" data-alt="wide shot of Hidden Peak shrouded in mist with a narrow ridgeline leading to a sharp summit" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDD7H4DiLHu8BjXVlOJ2_WBKf2mF0U_eiAmGFtqOQT1nAcUac2ouEE8Qk0q6uwP5j80EPr_QV81RMxABq4W8SmMfvr9Rj9iNux9WC08SteLW9iGfG2ryN0FG890IbczZ2UF72DqvZTH9a7bOYyN49eZ4a7oX959-eE7Qjs5JYLK_NIyMY437LZdIuSixSAjzyyCNzs57qZKPU1OqT3gSrRvvm0Ow6vLd3xTAZ1_IYINuCZDc1XdzD5jc1Xu9ykFM--SSOjtitZj9pm-"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-low to-transparent"></div>
+<div class="absolute top-4 left-4 bg-primary-container text-on-primary px-2 py-0.5 text-[10px] font-headline font-bold uppercase">ELITE_TIER</div>
+</div>
+<div class="p-6 relative">
+<div class="flex justify-between items-start mb-4">
+<div>
+<h3 class="font-headline text-2xl font-bold tracking-tight text-on-background">PEAK K1</h3>
+<p class="text-[10px] text-zinc-500 font-headline uppercase tracking-widest">HIDDEN_PEAK</p>
+</div>
+<div class="text-right">
+<p class="text-xl font-headline font-medium text-primary">8,080 M</p>
+<p class="text-[8px] text-zinc-500 font-headline uppercase tracking-tighter">SURFACE_LEVEL_ALT</p>
+</div>
+</div>
+<div class="space-y-4">
+<div class="bg-surface-container-lowest p-3 border-l border-zinc-800 group-hover:border-primary-container transition-colors">
+<p class="text-[9px] font-headline text-zinc-500 uppercase tracking-widest mb-2">REQUIRED_GEAR</p>
+<div class="flex flex-wrap gap-2">
+<span class="text-[8px] font-headline bg-surface-variant text-on-surface-variant px-2 py-0.5 uppercase">ADVANCED O2</span>
+<span class="text-[8px] font-headline bg-surface-variant text-on-surface-variant px-2 py-0.5 uppercase">PRO ICE AXE</span>
+</div>
+</div>
+<button class="w-full group-hover:bg-primary-container group-hover:text-on-primary border border-primary-container/30 text-primary transition-all py-2 font-headline font-bold text-[10px] tracking-widest uppercase">
+                                SELECT_MISSION
+                            </button>
+</div>
+</div>
+</article>
+<!-- Placeholder Grid Items (Continuing the 12-card grid) -->
+<script>
+                    const peaks = [
+                        { name: "K3", alt: "8,051 M", tag: "BROAD_PEAK", risk: "HIGH_VALOR" },
+                        { name: "K4", alt: "7,925 M", tag: "GASHERBRUM_II", risk: "ELITE_TIER" },
+                        { name: "K5", alt: "7,742 M", tag: "GASHERBRUM_IV", risk: "EXTREME_RISK" },
+                        { name: "K7", alt: "6,934 M", tag: "TECHNICAL_WALL", risk: "STANDARD_OPS" },
+                        { name: "K8", alt: "7,422 M", tag: "SILENT_CREST", risk: "HIGH_VALOR" },
+                        { name: "K9", alt: "6,666 M", tag: "VOID_PASS", risk: "STANDARD_OPS" },
+                        { name: "K10", alt: "7,200 M", tag: "ICE_PLATEAU", risk: "ELITE_TIER" },
+                        { name: "K11", alt: "7,150 M", tag: "NORTH_BUTTRESS", risk: "HIGH_VALOR" }
+                    ];
+
+                    peaks.forEach(peak => {
+                        document.write(`
+                            <article class="group relative bg-surface-container-low border border-outline-variant/10 overflow-hidden hover:border-primary-container/40 transition-all duration-300">
+                                <div class="relative h-48 overflow-hidden">
+                                    <img src="https://images.unsplash.com/photo-1454496522488-7a8e488e8606?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                                         data-alt="technical topography of a sharp mountain ridge with deep vertical drops and blue ice formations"
+                                         class="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500" />
+                                    <div class="absolute inset-0 bg-gradient-to-t from-surface-container-low to-transparent"></div>
+                                    <div class="absolute top-4 left-4 bg-zinc-800 text-zinc-300 px-2 py-0.5 text-[10px] font-headline font-bold uppercase">${peak.risk}</div>
+                                </div>
+                                <div class="p-6 relative">
+                                    <div class="flex justify-between items-start mb-4">
+                                        <div>
+                                            <h3 class="font-headline text-2xl font-bold tracking-tight text-on-background">PEAK ${peak.name}</h3>
+                                            <p class="text-[10px] text-zinc-500 font-headline uppercase tracking-widest">${peak.tag}</p>
+                                        </div>
+                                        <div class="text-right">
+                                            <p class="text-xl font-headline font-medium text-primary">${peak.alt}</p>
+                                        </div>
+                                    </div>
+                                    <div class="space-y-4">
+                                        <div class="bg-surface-container-lowest p-3 border-l border-zinc-800 group-hover:border-primary-container transition-colors">
+                                            <p class="text-[9px] font-headline text-zinc-500 uppercase tracking-widest mb-2">REQUIRED_GEAR</p>
+                                            <div class="flex flex-wrap gap-2">
+                                                <span class="text-[8px] font-headline bg-surface-variant text-on-surface-variant px-2 py-0.5 uppercase">STANDARD KIT</span>
+                                            </div>
+                                        </div>
+                                        <button class="w-full group-hover:bg-primary-container group-hover:text-on-primary border border-primary-container/30 text-primary transition-all py-2 font-headline font-bold text-[10px] tracking-widest uppercase">
+                                            SELECT_MISSION
+                                        </button>
+                                    </div>
+                                </div>
+                            </article>
+                        `);
+                    });
+                </script>
+</div>
+<!-- Footer Stats Overlay -->
+<footer class="mt-16 pt-8 border-t border-zinc-800/50 grid grid-cols-2 md:grid-cols-4 gap-8">
+<div>
+<p class="text-[10px] font-headline text-zinc-500 tracking-widest mb-1">SYSTEM_STATUS</p>
+<p class="text-xs font-headline font-bold text-tertiary-container">ALL_SYSTEMS_GO</p>
+</div>
+<div>
+<p class="text-[10px] font-headline text-zinc-500 tracking-widest mb-1">ATM_PRESSURE</p>
+<p class="text-xs font-headline font-bold">342 HPA <span class="text-[8px] text-primary">(LOW)</span></p>
+</div>
+<div>
+<p class="text-[10px] font-headline text-zinc-500 tracking-widest mb-1">ACTIVE_SQUAD</p>
+<p class="text-xs font-headline font-bold">STRIKE_TEAM_DELTA</p>
+</div>
+<div class="text-right">
+<p class="text-[10px] font-headline text-zinc-500 tracking-widest mb-1">ENCRYPTION</p>
+<p class="text-xs font-headline font-bold text-orange-600">RSA_4096_ACTIVE</p>
+</div>
+</footer>
+</div>
+</main>
+<!-- Mobile BottomNavBar (Suppressed on Web via CSS, but following prompt rules) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full bg-zinc-950 border-t border-zinc-800 px-6 py-3 flex justify-between items-center z-50">
+<div class="flex flex-col items-center gap-1 text-orange-500">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">filter_list</span>
+<span class="text-[8px] font-headline">ALTITUDE</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-zinc-500">
+<span class="material-symbols-outlined">leaderboard</span>
+<span class="text-[8px] font-headline">DIFFICULTY</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-zinc-500">
+<span class="material-symbols-outlined">query_stats</span>
+<span class="text-[8px] font-headline">METRICS</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-zinc-500">
+<span class="material-symbols-outlined">account_circle</span>
+<span class="text-[8px] font-headline">PROFILE</span>
+</div>
+</nav>
+</body></html>

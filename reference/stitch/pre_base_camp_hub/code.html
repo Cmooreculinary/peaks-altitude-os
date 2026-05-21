@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800;900&amp;family=Inter:wght@100;200;300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "error-container": "#93000a",
+              "on-surface": "#e5e2e3",
+              "on-background": "#e5e2e3",
+              "inverse-surface": "#e5e2e3",
+              "surface-bright": "#39393a",
+              "tertiary": "#9ccaff",
+              "surface": "#131314",
+              "surface-container-lowest": "#0e0e0f",
+              "on-tertiary": "#003257",
+              "on-primary-fixed": "#351000",
+              "on-tertiary-fixed-variant": "#00497b",
+              "error": "#ffb4ab",
+              "outline-variant": "#5a4136",
+              "surface-tint": "#ffb693",
+              "secondary-fixed": "#e0e3e5",
+              "on-secondary-container": "#b6b9bb",
+              "surface-container-highest": "#353436",
+              "secondary-fixed-dim": "#c4c7c9",
+              "surface-container": "#1f1f20",
+              "outline": "#a98a7d",
+              "secondary-container": "#464a4b",
+              "surface-container-low": "#1b1b1c",
+              "inverse-primary": "#a04100",
+              "on-tertiary-container": "#003357",
+              "on-primary-container": "#572000",
+              "inverse-on-surface": "#303031",
+              "surface-container-high": "#2a2a2b",
+              "primary-fixed": "#ffdbcc",
+              "tertiary-fixed-dim": "#9ccaff",
+              "tertiary-container": "#059eff",
+              "secondary": "#c4c7c9",
+              "on-error-container": "#ffdad6",
+              "on-surface-variant": "#e2bfb0",
+              "primary-container": "#ff6b00",
+              "on-secondary": "#2d3133",
+              "primary": "#ffb693",
+              "on-secondary-fixed": "#191c1e",
+              "primary-fixed-dim": "#ffb693",
+              "on-primary": "#561f00",
+              "on-tertiary-fixed": "#001d35",
+              "on-secondary-fixed-variant": "#444749",
+              "background": "#131314",
+              "surface-variant": "#353436",
+              "surface-dim": "#131314",
+              "on-error": "#690005",
+              "on-primary-fixed-variant": "#7a3000",
+              "tertiary-fixed": "#d0e4ff"
+            },
+            fontFamily: {
+              "headline": ["Space Grotesk"],
+              "body": ["Inter"],
+              "label": ["Inter"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        .topo-bg {
+            background-image: url("data:image/svg+xml,%3Csvg width='400' height='400' viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 100 Q 50 50 100 100 T 200 100 T 300 100 T 400 100 M0 200 Q 50 150 100 200 T 200 200 T 300 200 T 400 200 M0 300 Q 50 250 100 300 T 200 300 T 300 300 T 400 300' stroke='%235a4136' stroke-opacity='0.15' fill='transparent'/%3E%3C/svg%3E");
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface font-body selection:bg-primary-container selection:text-on-primary">
+<!-- TopAppBar -->
+<header class="bg-[#131314]/70 backdrop-blur-xl fixed top-0 w-full z-50 border-b border-[#5a4136]/15 shadow-[0_40px_40px_-15px_rgba(255,182,147,0.05)]">
+<div class="flex justify-between items-center px-6 h-20 w-full">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[#ff6b00]" data-icon="landscape">landscape</span>
+<span class="text-2xl font-black text-[#ff6b00] tracking-widest font-['Space_Grotesk'] uppercase">PEAKS</span>
+</div>
+<div class="hidden md:flex items-center gap-8">
+<nav class="flex gap-6">
+<a class="text-[#ff6b00] font-['Space_Grotesk'] tracking-tighter uppercase font-bold text-sm" href="#">BASE CAMP</a>
+<a class="text-slate-400 font-['Space_Grotesk'] tracking-tighter uppercase font-bold text-sm hover:bg-[#2a2a2b] transition-colors px-2 py-1" href="#">THE OUTPOST</a>
+<a class="text-slate-400 font-['Space_Grotesk'] tracking-tighter uppercase font-bold text-sm hover:bg-[#2a2a2b] transition-colors px-2 py-1" href="#">THE ASCENT</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-slate-400" data-icon="wb_cloudy">wb_cloudy</span>
+<div class="h-8 w-8 bg-surface-container-highest rounded-sm border border-outline-variant/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-xs" data-icon="person">person</span>
+</div>
+</div>
+</div>
+</header>
+<main class="pt-24 pb-32 px-6 max-w-7xl mx-auto topo-bg min-h-screen">
+<!-- Sub-header -->
+<div class="mb-12">
+<h2 class="font-headline text-5xl font-extrabold tracking-tighter uppercase text-on-background">EXPEDITION PREPARATION</h2>
+<p class="font-label text-sm text-on-surface-variant tracking-[0.2em] mt-2 uppercase opacity-70">Sector 4 // High-Altitude Logistics</p>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+<!-- Profile Section: Bento Cluster -->
+<section class="lg:col-span-4 flex flex-col gap-4">
+<div class="bg-surface-container-low p-8 rounded-sm border-l-4 border-primary-container">
+<p class="font-label text-xs font-bold tracking-widest text-on-surface-variant mb-1 uppercase">Staging Status</p>
+<h3 class="font-headline text-4xl font-bold text-primary">ELITE CLIMBER</h3>
+<div class="mt-8 space-y-6">
+<div class="flex justify-between items-end border-b border-outline-variant/10 pb-2">
+<span class="font-label text-[10px] tracking-widest text-on-surface-variant uppercase">Current Level</span>
+<span class="font-headline text-2xl font-bold">LVL 42</span>
+</div>
+<div class="flex justify-between items-end border-b border-outline-variant/10 pb-2">
+<span class="font-label text-[10px] tracking-widest text-on-surface-variant uppercase">Total Summits</span>
+<span class="font-headline text-2xl font-bold">12</span>
+</div>
+<div class="flex justify-between items-end bg-surface-container-highest/50 p-4">
+<span class="font-label text-[10px] tracking-widest text-primary font-bold uppercase">Attribute Points</span>
+<span class="font-headline text-3xl font-black text-primary">08</span>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-sm border border-outline-variant/15">
+<div class="flex items-center gap-3 mb-4">
+<span class="material-symbols-outlined text-tertiary" data-icon="inventory_2">inventory_2</span>
+<span class="font-label text-xs font-bold tracking-widest uppercase text-tertiary">Inventory Ready</span>
+</div>
+<div class="grid grid-cols-2 gap-2">
+<div class="bg-surface-container-high px-3 py-2 text-[10px] font-bold tracking-widest uppercase flex items-center justify-between">
+<span>Rope 60M</span>
+<span class="text-primary-container">X1</span>
+</div>
+<div class="bg-surface-container-high px-3 py-2 text-[10px] font-bold tracking-widest uppercase flex items-center justify-between">
+<span>Ice Axe</span>
+<span class="text-primary-container">X2</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Attribute Selection: Interactive Gauges -->
+<section class="lg:col-span-8 flex flex-col gap-6">
+<div class="bg-surface-container-low p-8 rounded-sm">
+<div class="flex justify-between items-center mb-10">
+<h4 class="font-headline text-xl font-bold tracking-tight uppercase">Capability Matrices</h4>
+<span class="font-label text-[10px] tracking-widest text-on-surface-variant bg-surface-container-highest px-3 py-1 rounded-full uppercase">Calibrating...</span>
+</div>
+<div class="space-y-12">
+<!-- Endurance Gauge -->
+<div class="space-y-4">
+<div class="flex justify-between items-center">
+<label class="font-label text-xs font-bold tracking-[0.2em] uppercase">Endurance</label>
+<div class="flex items-center gap-4">
+<button class="w-8 h-8 flex items-center justify-center bg-surface-container-highest hover:bg-primary-container hover:text-on-primary transition-colors active:scale-90">-</button>
+<span class="font-headline text-xl font-bold w-8 text-center">75</span>
+<button class="w-8 h-8 flex items-center justify-center bg-surface-container-highest hover:bg-primary-container hover:text-on-primary transition-colors active:scale-90">+</button>
+</div>
+</div>
+<div class="h-2 bg-surface-container-lowest w-full relative">
+<div class="h-full bg-primary-container" style="width: 75%;"></div>
+<div class="absolute -right-1 top-0 h-full w-1 bg-white opacity-20"></div>
+</div>
+</div>
+<!-- Technical Skill Gauge -->
+<div class="space-y-4">
+<div class="flex justify-between items-center">
+<label class="font-label text-xs font-bold tracking-[0.2em] uppercase">Technical Skill</label>
+<div class="flex items-center gap-4">
+<button class="w-8 h-8 flex items-center justify-center bg-surface-container-highest hover:bg-primary-container hover:text-on-primary transition-colors active:scale-90">-</button>
+<span class="font-headline text-xl font-bold w-8 text-center">42</span>
+<button class="w-8 h-8 flex items-center justify-center bg-surface-container-highest hover:bg-primary-container hover:text-on-primary transition-colors active:scale-90">+</button>
+</div>
+</div>
+<div class="h-2 bg-surface-container-lowest w-full relative">
+<div class="h-full bg-tertiary-container" style="width: 42%;"></div>
+</div>
+</div>
+<!-- Mental Fortitude Gauge -->
+<div class="space-y-4">
+<div class="flex justify-between items-center">
+<label class="font-label text-xs font-bold tracking-[0.2em] uppercase">Mental Fortitude</label>
+<div class="flex items-center gap-4">
+<button class="w-8 h-8 flex items-center justify-center bg-surface-container-highest hover:bg-primary-container hover:text-on-primary transition-colors active:scale-90">-</button>
+<span class="font-headline text-xl font-bold w-8 text-center">88</span>
+<button class="w-8 h-8 flex items-center justify-center bg-surface-container-highest hover:bg-primary-container hover:text-on-primary transition-colors active:scale-90">+</button>
+</div>
+</div>
+<div class="h-2 bg-surface-container-lowest w-full relative">
+<div class="h-full bg-primary" style="width: 88%;"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Strategy Toggle & Action -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="bg-surface-container-low p-6 flex flex-col justify-between border border-outline-variant/15">
+<span class="font-label text-[10px] tracking-widest text-on-surface-variant uppercase mb-4">Ascent Strategy</span>
+<div class="flex bg-surface-container-lowest p-1 rounded-sm gap-1">
+<button class="flex-1 py-3 text-[10px] font-bold tracking-widest uppercase bg-surface-container-highest text-on-surface">With Oxygen</button>
+<button class="flex-1 py-3 text-[10px] font-bold tracking-widest uppercase bg-primary-container text-on-primary shadow-lg">No Oxygen</button>
+</div>
+<div class="mt-4 flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined text-sm" data-icon="trending_up">trending_up</span>
+<span class="font-label text-[10px] font-bold uppercase">2.5X Reward Multiplier Active</span>
+</div>
+</div>
+<button class="bg-primary-container text-on-primary p-6 rounded-sm flex flex-col items-center justify-center gap-2 hover:brightness-110 active:scale-95 transition-all group">
+<span class="font-headline text-2xl font-black uppercase tracking-widest">COMMIT TO PEAK</span>
+<div class="flex items-center gap-2 font-label text-[10px] font-bold tracking-[0.3em] opacity-80 group-hover:opacity-100">
+<span>INITIATE DEPLOYMENT</span>
+<span class="material-symbols-outlined text-sm" data-icon="chevron_right">chevron_right</span>
+</div>
+</button>
+</div>
+</section>
+</div>
+<!-- Technical Data Overlay -->
+<div class="mt-16 grid grid-cols-2 md:grid-cols-4 gap-4 opacity-40">
+<div class="border-t border-outline-variant/30 pt-4">
+<p class="font-label text-[9px] tracking-widest uppercase">Barometric Pressure</p>
+<p class="font-headline text-sm">1013.25 hPa</p>
+</div>
+<div class="border-t border-outline-variant/30 pt-4">
+<p class="font-label text-[9px] tracking-widest uppercase">Wind Vector</p>
+<p class="font-headline text-sm">24 KT / NE</p>
+</div>
+<div class="border-t border-outline-variant/30 pt-4">
+<p class="font-label text-[9px] tracking-widest uppercase">Humidity Index</p>
+<p class="font-headline text-sm">12% / ARID</p>
+</div>
+<div class="border-t border-outline-variant/30 pt-4">
+<p class="font-label text-[9px] tracking-widest uppercase">Coordinates</p>
+<p class="font-headline text-sm">27.9881 N / 86.9250 E</p>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full h-20 bg-[#1b1b1c]/80 backdrop-blur-2xl flex justify-around items-center px-4 pb-safe z-50 border-t border-[#5a4136]/15">
+<a class="flex flex-col items-center justify-center text-[#ff6b00] bg-[#ff6b00]/10 rounded-sm py-2 px-6 active:translate-y-0.5 transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="home_work">home_work</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-bold tracking-widest uppercase mt-1">BASE CAMP</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-500 py-2 px-6 active:translate-y-0.5 transition-transform hover:text-[#ffb693]" href="#">
+<span class="material-symbols-outlined" data-icon="storefront">storefront</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-bold tracking-widest uppercase mt-1">THE OUTPOST</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-500 py-2 px-6 active:translate-y-0.5 transition-transform hover:text-[#ffb693]" href="#">
+<span class="material-symbols-outlined" data-icon="explore">explore</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-bold tracking-widest uppercase mt-1">THE ASCENT</span>
+</a>
+</nav>
+<!-- Decorative Topo Fade Overlay -->
+<div class="fixed inset-0 pointer-events-none z-0 topo-bg opacity-20"></div>
+</body></html>
