@@ -3,3 +3,7 @@ services:
     name: peaks-altitude-os
     runtime: static
     staticPublishPath: ./public
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
