@@ -2,7 +2,7 @@ services:
   - type: web
     name: peaks-altitude-os
     runtime: static
-    staticPublishPath: .
+    staticPublishPath: public
     headers:
       - path: /*
         name: Cache-Control
