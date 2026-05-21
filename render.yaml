@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: peaks-altitude-os
+    runtime: static
+    staticPublishPath: .
+    headers:
+      - path: /*
+        name: Cache-Control
+        value: public, max-age=3600
