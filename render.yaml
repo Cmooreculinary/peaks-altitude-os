@@ -2,7 +2,7 @@ services:
   - type: web
     name: peaks-altitude-os
     runtime: static
-    staticPublishPath: public
+    staticPublishPath: .
     routes:
       - type: rewrite
         source: /*
