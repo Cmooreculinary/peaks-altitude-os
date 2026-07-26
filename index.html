@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>PEAKS: CONQUER THE TOP 12</title>
+    
+    <!-- External Libraries -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/history@5/umd/history.development.js"></script>
+    <script src="https://unpkg.com/react-router@6.3.0/umd/react-router.development.js"></script>
+    <script src="https://unpkg.com/react-router-dom@6.3.0/umd/react-router-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+        }
+        .scan-line {
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            position: absolute;
+            top: -2px;
+            animation: scan 4s linear infinite;
+        }
+        @keyframes scan {
+            0% { top: 0%; opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { top: 100%; opacity: 0; }
+        }
+        .topo-pattern {
+            background-image: url("https://www.transparenttextures.com/patterns/carbon-fibre.png");
+            opacity: 0.05;
+        }
+        .glow-border-amber {
+            box-shadow: inset 0 0 10px rgba(245, 158, 11, 0.1);
+        }
+        .route-pulse {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: dash 5s linear forwards;
+        }
+        @keyframes dash { to { stroke-dashoffset: 0; } }
+        
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #0d141d; }
+        ::-webkit-scrollbar-thumb { background: #534434; border-radius: 2px; }
+        ::-webkit-scrollbar-thumb:hover { background: #f59e0b; }
+    </style>
+
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ffc174",
+                        "primary-container": "#f59e0b",
+                        "on-primary": "#472a00",
+                        "on-primary-container": "#613b00",
+                        "secondary": "#bcc7de",
+                        "background": "#0d141d",
+                        "surface": "#0d141d",
+                        "on-surface": "#dce3f0",
+                        "on-surface-variant": "#d8c3ad",
+                        "surface-container": "#19202a",
+                        "surface-container-high": "#242a34",
+                        "surface-container-highest": "#2e353f",
+                        "outline-variant": "#534434",
+                        "tertiary": "#56e5a9",
+                        "error": "#ffb4ab",
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.125rem",
+                    },
+                    fontFamily: {
+                        "subheading": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "data-sm": ["JetBrains Mono"],
+                        "body-md": ["Inter"],
+                        "data-lg": ["JetBrains Mono"],
+                        "display-xl": ["Inter"]
+                    },
+                    spacing: {
+                        "panel-padding": "20px",
+                        "margin-desktop": "40px",
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface font-body-md overflow-x-hidden selection:bg-primary-container selection:text-on-primary-container">
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+        const { createRoot } = ReactDOM;
+        const { MemoryRouter, Routes, Route, Link, useNavigate, useLocation } = ReactRouterDOM;
+
+        // --- COMPONENTS ---
+
+        const ShaderBackground = () => {
+            const canvasRef = useRef(null);
+            useEffect(() => {
+                const canvas = canvasRef.current;
+                const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+                if (!gl) return;
+
+                const vs = `attribute vec2 a_position; varying vec2 v_texCoord; void main() { v_texCoord = a_position * 0.5 + 0.5; gl_Position = vec4(a_position, 0.0, 1.0); }`;
+                const fs = `precision highp float; uniform float u_time; varying vec2 v_texCoord;
+                    float hash(vec2 p) { p = fract(p * vec2(123.34, 456.21)); p += dot(p, p + 45.32); return fract(p.x * p.y); }
+                    float noise(vec2 p) { vec2 i = floor(p); vec2 f = fract(p); float a = hash(i); float b = hash(i + vec2(1.0, 0.0)); float c = hash(i + vec2(0.0, 1.0)); float d = hash(i + vec2(1.0, 1.0)); vec2 u = f * f * (3.0 - 2.0 * f); return mix(a, b, u.x) + (c - a) * u.y * (1.0 - u.x) + (d - b) * u.x * u.y; }
+                    void main() { vec2 uv = v_texCoord; float n = noise(uv * 3.0 + u_time * 0.05); n += 0.5 * noise(uv * 6.0 - u_time * 0.02); vec3 color = vec3(0.02, 0.04, 0.08); float mask = smoothstep(0.3, 0.0, uv.y); color = mix(color, vec3(0.05, 0.08, 0.12), mask * n); color += 0.03 * n; gl_FragColor = vec4(color, 1.0); }`;
+
+                const createShader = (type, source) => {
+                    const shader = gl.createShader(type);
+                    gl.shaderSource(shader, source);
+                    gl.compileShader(shader);
+                    return shader;
+                };
+
+                const program = gl.createProgram();
+                gl.attachShader(program, createShader(gl.VERTEX_SHADER, vs));
+                gl.attachShader(program, createShader(gl.FRAGMENT_SHADER, fs));
+                gl.linkProgram(program);
+                gl.useProgram(program);
+
+                const buffer = gl.createBuffer();
+                gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+                gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
+
+                const pos = gl.getAttribLocation(program, 'a_position');
+                gl.enableVertexAttribArray(pos);
+                gl.vertexAttribPointer(pos, 2, gl.FLOAT, false, 0, 0);
+
+                const uTime = gl.getUniformLocation(program, 'u_time');
+                
+                const render = (t) => {
+                    gl.viewport(0, 0, canvas.width, canvas.height);
+                    gl.uniform1f(uTime, t * 0.001);
+                    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+                    requestAnimationFrame(render);
+                };
+                requestAnimationFrame(render);
+
+                const syncSize = () => {
+                    canvas.width = window.innerWidth;
+                    canvas.height = window.innerHeight;
+                };
+                window.addEventListener('resize', syncSize);
+                syncSize();
+                return () => window.removeEventListener('resize', syncSize);
+            }, []);
+
+            return (
+                <div className="fixed inset-0 z-0">
+                    <canvas ref={canvasRef} className="block w-full h-full opacity-60"></canvas>
+                    <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/40 to-background z-10"></div>
+                    <div className="absolute inset-0 topo-pattern z-20 pointer-events-none"></div>
+                </div>
+            );
+        };
+
+        const Shell = ({ children }) => {
+            const location = useLocation();
+            const isLanding = location.pathname === '/';
+            if (isLanding) return <>{children}</>;
+
+            return (
+                <div className="min-h-screen">
+                    <SideNav />
+                    <TopAppBar />
+                    <main className="lg:ml-64 pt-20 min-h-[calc(100vh-80px)]">
+                        {children}
+                    </main>
+                </div>
+            );
+        };
+
+        const TopAppBar = () => {
+            const location = useLocation();
+            const getTitle = () => {
+                const path = location.pathname;
+                if (path === '/command-center') return 'COMMAND CENTER';
+                if (path === '/peaks') return 'THE 12 PEAKS';
+                if (path === '/builder') return 'EXPEDITION BUILDER';
+                if (path === '/team') return 'TEAM MANAGEMENT';
+                if (path === '/sherpas') return 'RECRUITMENT HUB';
+                if (path === '/training') return 'TRAINING CENTER';
+                if (path === '/gear') return 'GEAR OUTFITTER';
+                if (path === '/logistics') return 'LOGISTICS & INVENTORY';
+                if (path === '/weather') return 'WEATHER CENTER';
+                if (path === '/oxygen') return 'OXYGEN PLANNER';
+                if (path === '/route') return 'ROUTE PLANNER';
+                if (path === '/live') return 'LIVE TELEMETRY';
+                if (path === '/rankings') return 'RANKINGS';
+                return 'PEAKS';
+            };
+
+            return (
+                <header className="fixed top-0 right-0 left-0 lg:left-64 h-20 bg-surface-dim/60 backdrop-blur-2xl border-b border-outline-variant/20 z-40 flex items-center justify-between px-6 lg:px-10">
+                    <div className="flex flex-col">
+                        <span className="font-headline-lg text-headline-lg font-black text-primary uppercase tracking-widest">{getTitle()}</span>
+                        <span className="text-[10px] text-on-surface-variant font-mono uppercase tracking-[0.2em] opacity-70">Sector: Khumbu Valley / Altitude: 5,364M</span>
+                    </div>
+                    <div className="flex items-center gap-6">
+                        <div className="hidden xl:flex items-center bg-surface-container-high rounded-full px-4 py-2 border border-outline-variant/30">
+                            <span className="material-symbols-outlined text-on-surface-variant text-sm mr-2">search</span>
+                            <input className="bg-transparent border-none focus:ring-0 text-data-sm font-data-sm text-on-surface placeholder:text-on-surface-variant/40 w-48" placeholder="QUERY_INTEL..." type="text"/>
+                        </div>
+                        <div className="flex items-center gap-4">
+                            <button className="text-on-surface-variant hover:text-primary transition-colors relative">
+                                <span className="material-symbols-outlined">notifications</span>
+                                <span className="absolute top-0 right-0 w-2 h-2 bg-primary rounded-full"></span>
+                            </button>
+                            <button className="text-on-surface-variant hover:text-primary transition-colors">
+                                <span className="material-symbols-outlined">settings</span>
+                            </button>
+                            <div className="flex items-center gap-3 border-l border-outline-variant/20 pl-6">
+                                <div className="text-right hidden sm:block">
+                                    <p className="font-label-caps text-[10px] text-on-surface-variant uppercase">Commander</p>
+                                    <p className="font-data-sm text-on-surface uppercase">V. Karpov</p>
+                                </div>
+                                <div className="w-10 h-10 rounded-full border border-primary/40 overflow-hidden">
+                                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCFzFBXMUIH0j9RWQ-VmSU0i2qlv2JabzDtyxrHWanTnGf7P-aVXZEGl1E5Cb1sfyViskeglwv2NtH56POK2M53tTnStxc8eznk-evusrk2j5L-o0jozOJAKh6nV91wfxErD08lQc2GZd1RsX_yY2UuKdi_jRwZwOKSMegxrOmfkSHKPk-LZCHrae4dkf9cfy2vDDVzAy9QilmRBywUz-LBkJmW5lGesmX4VKCavviV0ruGxmn401lMW0M_Isqc6Z4A6FBgmGOgaPwS" className="w-full h-full object-cover" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+            );
+        };
+
+        const SideNav = () => {
+            const location = useLocation();
+            const navItems = [
+                { path: '/command-center', label: 'Command Center', icon: 'dashboard' },
+                { path: '/peaks', label: 'The 12 Peaks', icon: 'landscape' },
+                { path: '/route', label: 'Route Planner', icon: 'map' },
+                { path: '/team', label: 'Team', icon: 'group' },
+                { path: '/sherpas', label: 'Sherpas', icon: 'support_agent' },
+                { path: '/training', label: 'Training', icon: 'fitness_center' },
+                { path: '/gear', label: 'Gear', icon: 'backpack' },
+                { path: '/logistics', label: 'Logistics', icon: 'local_shipping' },
+                { path: '/oxygen', label: 'Oxygen', icon: 'air' },
+                { path: '/weather', label: 'Weather', icon: 'cyclone' },
+                { path: '/live', label: 'Live Climb', icon: 'sensors' },
+                { path: '/rankings', label: 'Rankings', icon: 'leaderboard' },
+            ];
+
+            return (
+                <aside className="fixed left-0 top-0 h-screen w-64 border-r border-outline-variant/20 bg-surface-container/60 backdrop-blur-xl z-50 flex flex-col hidden lg:flex">
+                    <div className="p-8">
+                        <Link to="/"><h1 className="font-display-xl text-[24px] font-extrabold text-primary tracking-tighter leading-none mb-1">PEAKS</h1></Link>
+                        <p className="font-label-caps text-[10px] text-on-surface-variant tracking-[0.2em] opacity-80 uppercase">Mission Control</p>
+                    </div>
+                    <nav className="flex-1 overflow-y-auto px-4 py-2 space-y-1 custom-scrollbar">
+                        {navItems.map(item => (
+                            <Link 
+                                key={item.path}
+                                to={item.path} 
+                                className={`flex items-center gap-3 px-4 py-3 rounded transition-all duration-150 ${location.pathname === item.path ? 'text-primary font-bold border-l-2 border-primary bg-primary/10' : 'text-on-surface-variant font-medium hover:bg-surface-bright/50 hover:text-primary'}`}
+                            >
+                                <span className="material-symbols-outlined text-[20px]">{item.icon}</span>
+                                <span className="font-label-caps text-[11px] uppercase tracking-widest">{item.label}</span>
+                            </Link>
+                        ))}
+                    </nav>
+                    <div className="p-6 border-t border-outline-variant/10">
+                        <button className="w-full bg-primary-container text-on-primary-container font-black py-4 rounded tracking-widest text-[11px] hover:brightness-110 active:scale-95 flex items-center justify-center gap-2">
+                            <span className="material-symbols-outlined text-sm">play_arrow</span> START CLIMB
+                        </button>
+                    </div>
+                </aside>
+            );
+        };
+
+        // --- PAGES ---
+
+        const LandingPage = () => {
+            const navigate = useNavigate();
+            return (
+                <main className="relative pt-24 pb-20 min-h-screen z-30 px-6 lg:px-margin-desktop">
+                    <ShaderBackground />
+                    <section className="mt-12 mb-20 max-w-5xl relative z-10">
+                        <div className="inline-flex items-center gap-2 mb-4">
+                            <div className="h-px w-8 bg-primary"></div>
+                            <span className="font-label-caps text-label-caps text-primary tracking-[0.3em]">EXPEDITION PROTOCOL 01</span>
+                        </div>
+                        <h2 className="font-display-xl text-[64px] font-extrabold leading-[1.05] tracking-tighter mb-6">
+                            BUILD YOUR <br/>
+                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary-container">EXPEDITION.</span>
+                        </h2>
+                        <p className="font-headline-lg text-[20px] text-on-surface-variant/80 max-w-2xl mb-12">
+                            Manage high-stakes climbs across the world's most lethal summits. Strategy, logistics, and survival in the Death Zone.
+                        </p>
+                        <div className="flex flex-col sm:flex-row gap-6">
+                            <button onClick={() => navigate('/command-center')} className="px-10 py-5 bg-primary-container text-on-primary-container font-black tracking-widest rounded transition-all hover:scale-105 hover:shadow-[0_0_30px_-5px_rgba(245,158,11,0.5)] active:scale-95 flex items-center justify-center gap-3">
+                                BEGIN YOUR EXPEDITION <span className="material-symbols-outlined">trending_flat</span>
+                            </button>
+                            <button onClick={() => navigate('/peaks')} className="px-10 py-5 border border-outline-variant/40 bg-surface/30 backdrop-blur-md text-on-surface font-bold tracking-widest rounded transition-all hover:bg-surface-bright/40">
+                                VIEW PEAK DIRECTORY
+                            </button>
+                        </div>
+                    </section>
+                </main>
+            );
+        };
+
+        const CommandCenter = () => {
+            return (
+                <div className="p-margin-desktop grid grid-cols-12 gap-gutter max-w-7xl mx-auto h-full">
+                    <div className="col-span-12 lg:col-span-4 flex flex-col gap-gutter">
+                        <div className="glass-panel p-panel-padding flex flex-col items-center justify-center relative overflow-hidden h-72">
+                            <div className="relative w-48 h-48">
+                                <svg className="w-full h-full"><circle className="text-surface-container-highest" cx="96" cy="96" fill="transparent" r="80" stroke="currentColor" strokeWidth="8"></circle><circle className="text-primary" cx="96" cy="96" fill="transparent" r="80" stroke="currentColor" strokeDasharray="502.65" strokeDashoffset="125.66" strokeLinecap="butt" strokeWidth="8"></circle></svg>
+                                <div className="absolute inset-0 flex flex-col items-center justify-center"><span className="font-display-xl text-primary text-[48px] leading-none">09</span><span className="font-label-caps text-on-surface-variant">OF 12 PEAKS</span></div>
+                            </div>
+                        </div>
+                        <div className="grid grid-cols-2 gap-2 flex-1">
+                            <div className="glass-panel p-4 flex flex-col justify-between"><span className="font-label-caps text-[10px] text-on-surface-variant uppercase">Team Survival</span><span className="font-data-lg text-primary text-xl">100%</span></div>
+                            <div className="glass-panel p-4 flex flex-col justify-between"><span className="font-label-caps text-[10px] text-on-surface-variant uppercase">Global Rank</span><span className="font-data-lg text-primary text-xl">#884</span></div>
+                        </div>
+                    </div>
+                    <div className="col-span-12 lg:col-span-8 flex flex-col gap-gutter">
+                        <div className="grid grid-cols-4 gap-gutter">
+                            <div className="glass-panel p-4 border-l-2 border-primary"><p className="font-label-caps text-[10px] text-on-surface-variant mb-1 uppercase">Funds</p><p className="font-data-lg text-primary">$125,400</p></div>
+                            <div className="glass-panel p-4"><p className="font-label-caps text-[10px] text-on-surface-variant mb-1 uppercase">Acclimatization</p><p className="font-data-lg text-tertiary">78%</p></div>
+                            <div className="glass-panel p-4"><p className="font-label-caps text-[10px] text-on-surface-variant mb-1 uppercase">Weather</p><p className="font-data-lg text-tertiary">OPEN</p></div>
+                            <div className="glass-panel p-4"><p className="font-label-caps text-[10px] text-on-surface-variant mb-1 uppercase">Equip. Val</p><p className="font-data-lg text-on-surface">$42,000</p></div>
+                        </div>
+                        <div className="glass-panel p-6 flex flex-col gap-6 flex-1">
+                            <h2 className="font-label-caps text-on-surface uppercase tracking-widest border-b border-white/5 pb-2">Campaign Timeline: Mount Everest</h2>
+                            <div className="relative pt-8 pb-4">
+                                <div className="absolute top-[3.25rem] left-0 w-full h-[1px] bg-outline-variant/30"></div>
+                                <div className="grid grid-cols-4 relative z-10 text-center">
+                                    <div className="flex flex-col items-center"><div className="w-3 h-3 bg-primary rounded-full mb-6"></div><span className="font-label-caps text-[9px]">BASE CAMP</span><span className="text-[9px] text-tertiary mt-1">COMPLETE</span></div>
+                                    <div className="flex flex-col items-center"><div className="w-3 h-3 bg-primary rounded-full mb-6"></div><span className="font-label-caps text-[9px]">ROTATION 1</span><span className="text-[9px] text-tertiary mt-1">COMPLETE</span></div>
+                                    <div className="flex flex-col items-center"><div className="w-3 h-3 bg-primary rounded-full mb-6 pulse-amber"></div><span className="font-label-caps text-[9px]">ROTATION 2</span><span className="text-[9px] text-primary mt-1">ACTIVE</span></div>
+                                    <div className="flex flex-col items-center opacity-40"><div className="w-3 h-3 bg-surface-container-highest border border-outline-variant mb-6"></div><span className="font-label-caps text-[9px]">SUMMIT PUSH</span><span className="text-[9px] mt-1">QUEUED</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const PeakSelection = () => {
+            const peaks = [
+                { name: 'EVEREST', region: 'MAHALANGUR HIMAL', alt: '8,848M', status: 'ACTIVE', technical: 'LVL 07', hazard: 'EXTREME', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAF0VKb375uUtw1u6_HIwu8_m6P_FR9uD33CsmYhOB5yQzsF_yTnnHt0UwwH_j9dCbMWX8SOzrdbShQf27mDklOl_q7ir7N8qpWmyQwPX909w3Z5BWMD8Ob-gv4qWm19EZNPncj3UtGsOen2HaNTM8pKlhFHRqhl-3KnD6RoON_f5nAEM9FH1GR_qqxYmIt1uu0bGR_OBKtxukAaz7Z8xg3nXOrEUdhqqW45sIK0a381gij0kPcPqscHMXPoqJG06ZUUgBBTI1HGEZW' },
+                { name: 'K2', region: 'KARAKORAM RANGE', alt: '8,611M', status: 'LOCKED', technical: 'LVL 09', hazard: 'EXTREME', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuC6JBF464muzIK3p8kQ-G2fLAyfJ4R9BNLwccsbeLYh3qsSIhAQ3tR8ln-JAhWAPrBnqNRkucL-_3ZtcH7k42KcU-ws3pACH0reUXVMWYaKFQ1PYwTcW0Vsl3GaoKalxT5OwEcx9Ak8mWhMftcJXZM6cOoG4NEM5yIGyHbhr9RsWj5oNyH0Ck9e83K8TXKTLhI4KWUPC6yjOew1WD9Mi9mzyR1GhjCldyvAEgm9SqWNTo7aHbFvbPdKJ-zmPwVFAbkJT2b2tOrN3-_S' },
+                { name: 'ANNAPURNA I', region: 'ANNAPURNA MASSIF', alt: '8,091M', status: 'COMPLETED', technical: 'LVL 08', hazard: 'LETHAL', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBc3i1b1Z-_qL7JocTFH9NwO78rPLyKkTWTkUY2RrceK9TJQfCY4nU2rmHoPGPVCJYOypo8rJHha4pm9B1JxM9Y-aNOBBnKmff7m1Fwa5Wy_SHc0mU1MMe-qumlUp78QG1p-Nm3rsrNxpvLpFzAapnZlES7tgpviDYMG4T62mq5cYdDZep6SHvaGHJMfqn8JjTn5paFXLjQwgn4YfyjyRVw4OpArfx3zW3cIrUW2OTxgmPfoPBxbGrWBC47uopRroELz5l3TRfFpyOU' },
+                { name: 'LHOTSE', region: 'MAHALANGUR HIMAL', alt: '8,516M', status: 'AVAILABLE', technical: 'LVL 06', hazard: 'HIGH', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuC_QAqzCPZlxeHg5Q-CM47Q9hWNiG8EprDXjrruflrkfErQYOjxgenpl5tlE8BpoW8kKq8Ts-KjWVwuYF2-_BbZnalb75MKj91Ia9UPwiY-xRaFIdr9jKWA_wp7BSQwh9i9zRh-tDPaUFEJTLxwVFVNdSzMp_JLsn3rJfRgOfOeSURkl5dPq2Jbkd70MRTKUAGQl-bM6vpGkT8xmYFbeg1ynR0TvhT6TFxNExaUHEUMZXeqhWvIBVzm7670JiLEgnhd32kXSSPE-Eq9' },
+            ];
+
+            return (
+                <div className="flex-1 overflow-y-auto p-margin-desktop h-[calc(100vh-80px)]">
+                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 max-w-7xl mx-auto">
+                        {peaks.map(peak => (
+                            <div key={peak.name} className={`glass-panel group relative overflow-hidden flex flex-col border-primary transition-all duration-300 ${peak.status === 'LOCKED' ? 'opacity-50 grayscale' : 'hover:scale-[1.02]'}`}>
+                                <div className="h-48 relative overflow-hidden">
+                                    <img className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src={peak.img} />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-surface-container to-transparent opacity-60"></div>
+                                    <div className={`absolute top-4 left-4 font-label-caps text-[10px] px-2 py-1 ${peak.status === 'ACTIVE' ? 'bg-primary text-on-primary' : 'bg-surface-container-high text-on-surface'}`}>{peak.status}</div>
+                                    {peak.status === 'LOCKED' && <div className="absolute inset-0 flex items-center justify-center backdrop-blur-[1px]"><span className="material-symbols-outlined text-4xl">lock</span></div>}
+                                </div>
+                                <div className="p-6 flex-1 flex flex-col">
+                                    <div className="flex justify-between items-start mb-4">
+                                        <div><h3 className="font-headline-lg text-xl text-on-surface uppercase group-hover:text-primary transition-colors">{peak.name}</h3><p className="font-data-sm text-[10px] text-on-surface-variant">{peak.region}</p></div>
+                                        <div className="text-right"><p className="font-data-lg text-primary">{peak.alt}</p><p className="font-label-caps text-[9px] text-on-surface-variant">ALTITUDE</p></div>
+                                    </div>
+                                    <button disabled={peak.status === 'LOCKED'} className="w-full bg-primary/10 border border-primary text-primary font-bold py-2 font-label-caps text-[11px] hover:bg-primary hover:text-on-primary transition-all disabled:cursor-not-allowed">ENTER EXPEDITION</button>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            );
+        };
+
+        const TeamManagement = () => {
+            const team = [
+                { id: 'E-01', name: 'L. DARHK', role: 'LEADER', status: 'READY', stamina: 92, cold: 88, acclimatization: 84, perk: 'ALPHA COMMAND (+10% MORALE)', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBnCU-jf3XloNqO-iJ7GbYhBY-QKOyHGNV8qkFQWHkANtKgWm9PQQBBltZqZXGkXLyRvZdFEpoD6x5NTzFz8_FpUGmpn71BXp7yjsRX8DEza4r14Xkhg7ocd8W7EFwN8jO2Kbr3APiqhByWxPfrf-_KxDdNY4pAx8GlZNslt7zsyu-O9MtbFW81CR7KSiXq8YZCeRMCJjbr5cMhTbhbdiBw1qxPvKACGX0kH0L52J41RapJzueuCnMdAvJ8VD06ox_Qa2HGXt8omzni' },
+                { id: 'E-04', name: 'P. CHEN', role: 'CHIEF MEDIC', status: 'DEPLOYED', stamina: 65, cold: 94, acclimatization: 91, perk: 'OXYGEN OPTIMIZER (-15% O2)', img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBoQkx1HDlj7y5dl7x0RVmrNu6Z88lFIEpl-g79cJPGWMKVZ0adXpFrXpQ6hGpw4AHH5ONwfrt3JNo25p0y_LFs71okoG9T7htyjsdGoT1-HYWpy4CVSGsl8BrRg1SAP1W-4UU1nTeVVWy45A_o_vRjo3jwP2sZVyl-_vfFiZvuW6SgRoDJBF5_Xlm8B-HxBQjHmIJhNOqNetdmu3gSiEEy_gem3x1biAgg4Jk4Wxabez1XZEQfcFlqwmisRwZ1SUiAYV8uRMfzFNtO' }
+            ];
+
+            return (
+                <div className="p-margin-desktop space-y-8 max-w-7xl mx-auto h-[calc(100vh-80px)] overflow-y-auto">
+                    <div className="flex justify-between items-end border-l-4 border-primary pl-6">
+                        <div><h1 className="font-headline-lg text-headline-lg uppercase tracking-tight">Personnel Roster</h1><p className="text-on-surface-variant font-data-sm text-sm">Active Expedition Team Status & Logistics</p></div>
+                        <div className="text-right"><div className="font-data-lg text-primary">08 / 12</div><div className="font-label-caps text-on-surface-variant text-[10px]">CAPACITY FILLED</div></div>
+                    </div>
+                    <div className="grid grid-cols-1 xl:grid-cols-2 gap-gutter">
+                        {team.map(member => (
+                            <div key={member.id} className="glass-panel group relative overflow-hidden transition-all duration-300 hover:border-primary/40">
+                                <div className="scan-line"></div>
+                                <div className="flex h-48">
+                                    <div className="w-40 relative border-r border-outline-variant/20"><img className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" src={member.img} /></div>
+                                    <div className="flex-1 p-5 flex flex-col justify-between">
+                                        <div className="flex justify-between items-start">
+                                            <div><h3 className="font-subheading text-on-surface leading-none mb-1">{member.name}</h3><span className="font-label-caps text-primary text-[9px] tracking-[0.2em]">{member.role}</span></div>
+                                            <span className="px-3 py-1 bg-tertiary/10 text-tertiary border border-tertiary/30 font-label-caps text-[9px] tracking-widest">{member.status}</span>
+                                        </div>
+                                        <div className="grid grid-cols-2 gap-4">
+                                            <div className="space-y-1"><div className="flex justify-between text-[9px] font-label-caps"><span>STAMINA</span><span className="text-on-surface">{member.stamina}%</span></div><div className="h-1 bg-surface-variant"><div className="h-full bg-primary" style={{width: `${member.stamina}%`}}></div></div></div>
+                                            <div className="space-y-1"><div className="flex justify-between text-[9px] font-label-caps"><span>COLD RES.</span><span className="text-on-surface">{member.cold}%</span></div><div className="h-1 bg-surface-variant"><div className="h-full bg-primary" style={{width: `${member.cold}%`}}></div></div></div>
+                                        </div>
+                                        <div className="pt-2 border-t border-outline-variant/20 flex items-center gap-2 text-[9px] font-label-caps text-primary tracking-widest uppercase">{member.perk}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            );
+        };
+
+        const TrainingCenter = () => {
+            return (
+                <div className="p-margin-desktop grid grid-cols-12 gap-gutter max-w-7xl mx-auto h-[calc(100vh-80px)] overflow-y-auto">
+                    <section className="col-span-12 lg:col-span-8 glass-panel relative overflow-hidden p-panel-padding">
+                        <div className="scan-line"></div>
+                        <div className="flex justify-between items-end mb-8 border-b border-outline-variant/20 pb-4">
+                            <div><h3 className="font-label-caps text-primary mb-1">Subject Alpha-01</h3><h2 className="font-headline-lg text-2xl uppercase">L. Darhk <span className="font-data-sm opacity-50 ml-2">ID: 8848-LD</span></h2></div>
+                            <div className="text-right text-tertiary font-bold">STABLE</div>
+                        </div>
+                        <div className="grid grid-cols-2 gap-12">
+                            <div className="space-y-6">
+                                {['VO2 MAX', 'FROSTBITE RESISTANCE', 'COLD ADAPTATION', 'MUSCLE RECOVERY'].map(stat => (
+                                    <div key={stat} className="space-y-2">
+                                        <div className="flex justify-between font-data-sm text-[11px]"><span className="text-on-surface-variant">{stat}</span><span className="text-primary">OPTIMAL</span></div>
+                                        <div className="h-1 bg-surface-variant w-full overflow-hidden"><div className="h-full bg-primary shadow-[0_0_8px_rgba(245,158,11,0.6)]" style={{width: '85%'}}></div></div>
+                                    </div>
+                                ))}
+                            </div>
+                            <div className="flex justify-center items-center">
+                                <div className="w-48 h-48 rounded-full border border-primary/20 flex items-center justify-center relative bg-primary/5">
+                                    <div className="relative text-center"><span className="material-symbols-outlined text-4xl text-primary mb-2">vital_signs</span><p className="font-data-lg text-xl">98.6°F</p><p className="font-label-caps text-[9px] text-on-surface-variant opacity-50 uppercase">Core Temp</p></div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <section className="col-span-12 lg:col-span-4 glass-panel flex flex-col p-panel-padding">
+                        <h3 className="font-label-caps text-primary mb-6 border-b border-white/5 pb-2">Training Queue</h3>
+                        <div className="space-y-4">
+                            <div className="border-l-2 border-primary bg-primary/5 p-4"><div className="flex justify-between text-[10px] text-primary mb-1"><span>IN PROGRESS</span><span>01:14:52</span></div><h4 className="font-bold">Hypoxic Training</h4><div className="h-1 bg-surface-variant mt-2"><div className="h-full bg-primary" style={{width: '38%'}}></div></div></div>
+                            <div className="bg-surface-container/50 p-4 border-l-2 border-transparent"><h4 className="font-bold opacity-70">Crevasse Rescue Drill</h4><p className="text-[10px] text-on-surface-variant">45m PENDING</p></div>
+                        </div>
+                    </section>
+                </div>
+            );
+        };
+
+        const WeatherCenter = () => {
+            return (
+                <div className="p-margin-desktop grid grid-cols-12 gap-gutter max-w-7xl mx-auto h-[calc(100vh-80px)] overflow-y-auto">
+                    <div className="col-span-8 space-y-gutter">
+                        <div className="relative h-[400px] glass-panel overflow-hidden">
+                            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAacBXajR86f44ZprB9j_u3F8U87Rt3a_bBzAt4Vnw4_VJEORIkjZONJcMrxYmpZKQqRoEsvxL6hV-z4FFtSuiVk84cyZmAK8Xn9j0g3mtzq4TPAdu1tRJlwrxe6_UOyO2oaw8w1mJdX-wf2sr0FPjo-AY6zEdIRShQx1_P4X12KQ9SZkGUdWg328khgoOz2zsQIjJBb5xzpzfjkH9bTJt6UNTgYqYz97GMDmEeujZryY4kV9GIVww32BvlhbtID9oNrVJFF99J6_lF" className="absolute inset-0 w-full h-full object-cover opacity-70 mix-blend-screen" />
+                            <div className="absolute top-6 left-6 bg-surface/80 p-4 border border-outline-variant/30 backdrop-blur-md">
+                                <h3 className="font-label-caps text-primary text-[10px]">Sat-V Correlation: Everest</h3>
+                                <div className="font-data-lg text-lg">27° 59' 17" N | 86° 55' 31" E</div>
+                            </div>
+                        </div>
+                        <div className="grid grid-cols-2 gap-gutter">
+                            <div className="glass-panel p-6">
+                                <h3 className="font-label-caps text-primary text-[10px] mb-4">Pressure Trend (24H)</h3>
+                                <div className="h-32 flex items-end gap-1 px-2">
+                                    {[60, 65, 75, 82, 90, 85, 88, 70, 60, 55].map((h, i) => <div key={i} className="flex-1 bg-primary/40 hover:bg-primary transition-all" style={{height: `${h}%`}}></div>)}
+                                </div>
+                            </div>
+                            <div className="glass-panel p-6">
+                                <h3 className="font-label-caps text-primary text-[10px] mb-4">Summit Window Forecast</h3>
+                                <div className="space-y-2">
+                                    {['MAY 14', 'MAY 15', 'MAY 16'].map((d, i) => (
+                                        <div key={d} className="flex items-center gap-4 text-[11px]">
+                                            <span className="w-12">{d}</span>
+                                            <div className="flex-1 h-2 bg-surface-variant overflow-hidden"><div className={`h-full ${i === 2 ? 'bg-tertiary' : 'bg-error/50'}`} style={{width: '100%'}}></div></div>
+                                            <span className={i === 2 ? 'text-tertiary' : 'text-error'}>{i === 2 ? 'OPEN' : 'RISK'}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col-span-4 space-y-4">
+                        <div className="glass-panel p-4 border-l-4 border-primary bg-gradient-to-r from-primary/5 to-transparent">
+                            <p className="font-label-caps text-[9px] text-primary font-bold">Summit Zone</p>
+                            <p className="font-data-lg text-2xl font-bold">8,848M</p>
+                            <div className="grid grid-cols-3 gap-2 mt-4 text-[10px]">
+                                <div className="bg-surface-container-low p-2"><span>WIND</span><p className="text-error font-bold">92km/h</p></div>
+                                <div className="bg-surface-container-low p-2"><span>TEMP</span><p>-38°C</p></div>
+                                <div className="bg-surface-container-low p-2"><span>PRECIP</span><p>15%</p></div>
+                            </div>
+                        </div>
+                        <div className="bg-error/10 border border-error/30 p-4 relative overflow-hidden">
+                            <h4 className="text-error font-bold text-[10px] uppercase flex items-center gap-2 mb-2"><span className="material-symbols-outlined text-sm">emergency</span> Warning</h4>
+                            <p className="text-[11px] leading-tight">Sudden pressure drop detected at 8000m+. Forecast predicts wind gusts exceeding 110km/h. Hold all pushes.</p>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const RoutePlanner = () => {
+            return (
+                <div className="fixed inset-0 lg:left-64 top-20 bg-background overflow-hidden tech-grid">
+                    <div className="absolute inset-0 z-0">
+                        <div className="w-full h-full bg-cover bg-center opacity-60 mix-blend-screen" style={{backgroundImage: "url('https://lh3.googleusercontent.com/aida-public/AB6AXuCszN4on7e1LDPsGBdly6WZ992Osb_3HuQYsHv0pxPURTA5Hr8xU21kUaINPAm3ama7MsP9jsfD2sfC3qvcpgQlMm6GHd1Xnp4dYFcZnLcKykEx7LUTeIWovx4nhbI62buwQotZ8MRkmg4m9eYDMN5zaSAoUC4FtcXZqJFXMTOVnRWkWUCccl2BoodqlCJnbQqBDVCU5wq0BhTXLAXpihEwZiidmpacUO0xtgwFVx62qacnEa4k8h7HQ-fgW1uVrOzUomTWN1FBPCKA')"}}></div>
+                        <div className="absolute inset-0 scan-line opacity-30 pointer-events-none"></div>
+                        <svg className="absolute inset-0 w-full h-full z-20 pointer-events-none" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice">
+                            <path className="route-pulse" d="M 300 700 Q 450 650 500 550 T 600 450 T 750 350 T 800 200" fill="none" stroke="#f59e0b" strokeWidth="3"></path>
+                            <circle cx="300" cy="700" r="5" fill="#f59e0b" className="pulse-amber" />
+                            <circle cx="800" cy="200" r="8" fill="#f59e0b" className="pulse-amber" />
+                        </svg>
+                    </div>
+                    <div className="absolute left-10 top-10 w-80 space-y-6 z-30">
+                        <div className="glass-panel p-panel-padding border-l-4 border-primary">
+                            <span className="font-label-caps text-primary text-[10px]">Route Alpha-1</span>
+                            <h2 className="font-data-lg text-2xl font-black">SOUTH COL PATH</h2>
+                            <div className="mt-4 grid grid-cols-2 gap-4">
+                                <div><p className="text-[9px] text-on-surface-variant">VERTICAL GAIN</p><p className="font-bold">3,480M</p></div>
+                                <div><p className="text-[9px] text-on-surface-variant">TECHNICAL GRADE</p><p className="text-error font-bold">EXTREME</p></div>
+                            </div>
+                        </div>
+                        <div className="glass-panel p-panel-padding">
+                            <h3 className="font-label-caps text-primary text-[10px] mb-4">EXPEDITION MANIFEST</h3>
+                            <div className="space-y-3">
+                                {['O2 BOTTLES: 12 units', 'FIXED ROPES: 600M', 'LADDERS: 04 units'].map(item => (
+                                    <div key={item} className="flex justify-between text-[11px] font-mono"><span>{item.split(':')[0]}</span><span className="text-primary">{item.split(':')[1]}</span></div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        const Rankings = () => {
+            const leaderboard = [
+                { rank: '01', team: 'APEX_PREDATORS', peaks: '12 / 12', time: '142H 12M', score: '98,420', status: 'ACTIVE' },
+                { rank: '02', team: 'VANGUARD_ZERO', peaks: '11 / 12', time: '158H 45M', score: '94,100', status: 'ACTIVE' },
+                { rank: '42', team: 'ECHO_TACTICAL (YOU)', peaks: '07 / 12', time: '204H 11M', score: '42,850', status: 'RESTING', highlight: true },
+                { rank: '43', team: 'SERAC_HUNTERS', peaks: '07 / 12', time: '210H 02M', score: '41,200', status: 'OFFLINE' }
+            ];
+            return (
+                <div className="p-margin-desktop max-w-7xl mx-auto h-[calc(100vh-80px)] overflow-y-auto space-y-10">
+                    <div className="grid grid-cols-12 gap-gutter">
+                        <div className="col-span-8"><h2 className="font-headline-lg text-4xl uppercase mb-2">Challenges & Rankings</h2><p className="opacity-70 max-w-xl">Monitor mission progress and global standing for the 12 lethal summits.</p></div>
+                        <div className="col-span-4"><div className="glass-panel p-6 border-primary/20">
+                            <span className="font-label-caps text-primary text-[10px]">Rank: Base Camp Elite</span>
+                            <div className="h-1.5 bg-surface-container-highest mt-3"><div className="h-full bg-primary" style={{width: '72%'}}></div></div>
+                            <p className="font-mono text-[9px] mt-2 opacity-50">8,400 RP / 10,000 RP TO LEGEND</p>
+                        </div></div>
+                    </div>
+                    <section className="glass-panel overflow-hidden">
+                        <div className="p-6 border-b border-white/5 bg-surface-container-low flex justify-between items-center"><h3 className="font-label-caps uppercase text-primary">Global Leaderboard</h3><div className="flex gap-2"><span className="px-3 py-1 bg-surface-container text-[10px] font-mono border border-white/10">S3: ETERNAL ICE</span></div></div>
+                        <div className="overflow-x-auto">
+                            <table className="w-full text-left font-mono text-[12px]">
+                                <thead><tr className="text-on-surface-variant/60 border-b border-white/5 uppercase"><th className="px-6 py-4 font-normal">Rank</th><th className="px-6 py-4 font-normal">Expedition Team</th><th className="px-6 py-4 font-normal">Peaks</th><th className="px-6 py-4 font-normal">Total Speed</th><th className="px-6 py-4 font-normal">Score</th><th className="px-6 py-4 font-normal text-right">Status</th></tr></thead>
+                                <tbody>{leaderboard.map(row => (
+                                    <tr key={row.rank} className={`border-b border-white/5 transition-colors ${row.highlight ? 'bg-primary/10 text-primary border-y border-primary/30' : 'hover:bg-white/5'}`}>
+                                        <td className="px-6 py-4">{row.rank}</td><td className="px-6 py-4 font-bold">{row.team}</td><td className="px-6 py-4">{row.peaks}</td><td className="px-6 py-4">{row.time}</td><td className="px-6 py-4">{row.score}</td><td className="px-6 py-4 text-right"><span className={`px-2 py-0.5 rounded-sm text-[10px] ${row.status === 'ACTIVE' ? 'bg-tertiary/10 text-tertiary' : 'bg-surface-variant text-on-surface-variant'}`}>{row.status}</span></td>
+                                    </tr>
+                                ))}</tbody>
+                            </table>
+                        </div>
+                    </section>
+                </div>
+            );
+        };
+
+        const App = () => {
+            return (
+                <MemoryRouter>
+                    <Shell>
+                        <Routes>
+                            <Route path="/" element={<LandingPage />} />
+                            <Route path="/command-center" element={<CommandCenter />} />
+                            <Route path="/peaks" element={<PeakSelection />} />
+                            <Route path="/team" element={<TeamManagement />} />
+                            <Route path="/training" element={<TrainingCenter />} />
+                            <Route path="/weather" element={<WeatherCenter />} />
+                            <Route path="/route" element={<RoutePlanner />} />
+                            <Route path="/rankings" element={<Rankings />} />
+                            {/* Simple generic fallbacks for missing complex detail pages */}
+                            <Route path="/builder" element={<div className="p-20 text-center"><h1 className="text-4xl text-primary font-black">EXPEDITION BUILDER</h1><p className="mt-4 opacity-70">Topographic integration pending sync...</p></div>} />
+                            <Route path="/sherpas" element={<div className="p-20 text-center"><h1 className="text-4xl text-primary font-black">SHERPA RECRUITMENT</h1><p className="mt-4 opacity-70">Connecting to Solukhumbu roster...</p></div>} />
+                            <Route path="/gear" element={<div className="p-20 text-center"><h1 className="text-4xl text-primary font-black">GEAR OUTFITTER</h1><p className="mt-4 opacity-70">Catalog loading (v4.2 tactical range)...</p></div>} />
+                            <Route path="/logistics" element={<div className="p-20 text-center"><h1 className="text-4xl text-primary font-black">INVENTORY & LOGISTICS</h1><p className="mt-4 opacity-70">Drone supply line ETA: 04:22:15 UTC</p></div>} />
+                            <Route path="/oxygen" element={<div className="p-20 text-center"><h1 className="text-4xl text-primary font-black">OXYGEN PLANNER</h1><p className="mt-4 opacity-70">Death Zone Trajectory Syncing...</p></div>} />
+                            <Route path="/live" element={<div className="p-20 text-center"><h1 className="text-4xl text-primary font-black">LIVE TELEMETRY</h1><p className="mt-4 opacity-70">Waiting for satellite handoff...</p></div>} />
+                        </Routes>
+                    </Shell>
+                </MemoryRouter>
+            );
+        };
+
+        const root = createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
